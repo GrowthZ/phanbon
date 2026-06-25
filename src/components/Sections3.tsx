@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import { Placeholder, SectionTitle, SectionWrapper, RevealOnScroll, StepCard, BenefitCard } from './ui';
 import { trackEvent } from '../constants';
-import { Star, PlayCircle } from 'lucide-react';
+import { Star, PlayCircle, ShieldAlert } from 'lucide-react';
 
 export function Process({ onOpenForm }: { onOpenForm: () => void }) {
   const steps = [
     {
       step: "Bước 1",
-      title: "Pha men",
-      desc: "Pha men vi sinh với nước hoặc rỉ mật theo tỷ lệ hướng dẫn đi kèm.",
+      title: "Pha men 1 phút",
+      desc: "Chỉ cần khuấy đều men vi sinh vào nước. Không cần đun nấu khói mù mịt như xưa!",
       img: "Pha men vi sinh",
       src: "/images/step_1.png"
     },
     {
       step: "Bước 2",
-      title: "Trộn nguyên liệu",
-      desc: "Trộn đều dung dịch men đã pha với cám, rau, bã đậu, thân ngô băm nhỏ...",
+      title: "Trộn đều nguyên liệu phế phẩm",
+      desc: "Hốt hết mớ cám, rau, bã đậu, thân ngô... trộn đều với nước men. Dọn dẹp cả đống rác thành tiền!",
       img: "Trộn nguyên liệu",
       src: "/images/step_2.png"
     },
     {
       step: "Bước 3",
-      title: "Ủ kín và sử dụng",
-      desc: "Cho vào thùng phuy hoặc bao nilon buộc kín. Sau 1-2 ngày thức ăn thơm chín là dùng được.",
+      title: "Ủ kín & Xong việc!",
+      desc: "Cột kín miệng túi. Sau 24h mở ra, mùi thơm nức mũi như rượu vang, vật nuôi tranh nhau ăn!",
       img: "Ủ kín và sử dụng",
       src: "/images/step_3.png"
     }
@@ -30,7 +30,7 @@ export function Process({ onOpenForm }: { onOpenForm: () => void }) {
 
   return (
     <SectionWrapper bgType="gray">
-      <SectionTitle subtitle="Làm tại nhà cực kỳ đơn giản và nhanh chóng">QUY TRÌNH Ủ 3 BƯỚC</SectionTitle>
+      <SectionTitle subtitle="Vứt bỏ bếp củi, nhàn nhã uống trà đợi cám chín">CHỈ 3 BƯỚC NHÀN TÊNH - <span className="text-[#2E7D32]">AI CŨNG LÀM ĐƯỢC</span></SectionTitle>
       
       <div className="space-y-4">
         {steps.map((item, i) => (
@@ -51,22 +51,22 @@ export function Process({ onOpenForm }: { onOpenForm: () => void }) {
 
 export function Benefits() {
   const benefits = [
-    "Giảm đáng kể chi phí cám nhờ tận dụng nguyên liệu sẵn có quanh nhà",
-    "Thức ăn sau ủ có mùi thơm, chín mềm, kích thích vật nuôi ăn nhiều hơn",
-    "Hỗ trợ hệ tiêu hóa khỏe mạnh, hạn chế tối đa tiêu chảy, đầy hơi",
-    "Giảm công nấu cám hằng ngày, chỉ cần phối trộn và ủ kín",
-    "Chủ động nguồn thức ăn dự trữ cho đàn gia súc, gia cầm",
-    "Hạn chế lãng phí phụ phẩm nông nghiệp sau mỗi mùa thu hoạch"
+    "CẮT ĐỨT 50% CHI PHÍ CÁM NGAY LẬP TỨC: Tiền lời đắp thẳng vào túi bạn!",
+    "BĂM NÁT BỆNH ĐƯỜNG RUỘT: Tiêu hóa 100%, không còn cảnh tiêu chảy ồ ạt chết cả đàn",
+    "THỊT THƠM DÀY - BÁN ĐƯỢC GIÁ: Bò lợn gà săn chắc, thương lái tranh nhau mua!",
+    "CHỈ TỐN 10 PHÚT MỖI NGÀY: Quên đi cảnh hì hục củi lửa, khói lấm lem cả mặt",
+    "CHUỒNG TRẠI SẠCH BONG, KHÔNG CÒN MÙI HÔI THỐI: Hàng xóm hết cửa phàn nàn!",
+    "MIỄN NHIỄM DỊCH BỆNH: Men vi sinh bảo vệ dạ dày như một tấm khiên thép vững chắc"
   ];
 
   return (
     <SectionWrapper bgType="green-dark">
-      <SectionTitle className="text-white" subtitle="Kết quả vượt trội khi bà con áp dụng đúng kỹ thuật">
-        LỢI ÍCH VƯỢT TRỘI
+      <SectionTitle className="text-white" subtitle="Kết quả ngay trong tuần đầu tiên áp dụng">
+        <span className="text-[#FFEB3B]">KẾT QUẢ SẼ LÀM BẠN SỐC NẶNG</span>
       </SectionTitle>
       
-      <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-5 sm:p-6 border border-white/15">
-        <div className="grid grid-cols-1 gap-3">
+      <div className="bg-white/10 backdrop-blur-sm rounded-3xl p-5 sm:p-6 border-2 border-white/30 shadow-2xl">
+        <div className="grid grid-cols-1 gap-4">
           {benefits.map((item, i) => (
             <RevealOnScroll key={i} delay={i * 80}>
               <BenefitCard text={item} dark={true} />
@@ -80,24 +80,24 @@ export function Benefits() {
 
 export function OtherUses() {
   const uses = [
-    "Khử mùi hôi chuồng trại",
-    "Làm đệm lót sinh học",
-    "Ủ phân hữu cơ",
-    "Ủ đạm cá",
-    "Hỗ trợ xử lý môi trường ao nuôi",
-    "Kết hợp mô hình sâu canxi / ruồi lính đen"
+    "Khử cực mạnh mùi hôi chuồng",
+    "Làm đệm lót sinh học vĩnh cửu",
+    "Ủ phân hữu cơ bón cây cực tốt",
+    "Ủ đạm cá thối thành đạm thơm",
+    "Cứu nguy môi trường ao tôm cá",
+    "Nuôi sâu canxi lớn nhanh như thổi"
   ];
 
   return (
     <SectionWrapper bgType="white">
-      <SectionTitle subtitle="1 bộ sản phẩm tích hợp đa ứng dụng chăn nuôi">KHÔNG CHỈ DÙNG ĐỂ Ủ THỨC ĂN</SectionTitle>
+      <SectionTitle subtitle="Đa dụng vô đối - Không mua là một sai lầm lớn!">1 SẢN PHẨM - GIẢI QUYẾT BÁCH BỆNH TRANG TRẠI</SectionTitle>
       
       <div className="grid grid-cols-2 gap-3">
         {uses.map((item, i) => (
           <RevealOnScroll key={i} delay={i * 60}>
-            <div className="bg-[#FFFDF6] border border-[#FFF8E1] rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow-sm hover:border-[#F9A825] transition-colors duration-300 min-h-[110px]">
-              <Star className="w-6 h-6 text-[#F9A825] mb-2 shrink-0" />
-              <span className="font-bold text-[#1F2937] text-[13px] leading-tight">{item}</span>
+            <div className="bg-gradient-to-br from-[#FFFDF6] to-[#FFF8E1] border border-[#FFD54F] rounded-2xl p-4 flex flex-col items-center justify-center text-center shadow hover:shadow-md hover:scale-105 transition-all duration-300 min-h-[110px]">
+              <ShieldAlert className="w-6 h-6 text-[#F57F17] mb-2 shrink-0 animate-pulse" />
+              <span className="font-black text-[#1F2937] text-[13px] leading-tight">{item}</span>
             </div>
           </RevealOnScroll>
         ))}
@@ -124,13 +124,13 @@ export function SocialProof() {
     {
       name: "Anh Hoàng (Hải Dương)",
       role: "Nuôi 50 lợn thịt",
-      text: "Men ủ thơm lắm em ơi, đàn lợn nhà anh thích ăn hẳn, ăn xong ngủ kỹ không phá chuồng nữa. Tiết kiệm được bao nhiêu tiền cám cò!",
+      text: "Suýt nữa thì bán sạch trại vì giá cám tăng điên cuồng. Từ lúc xài men này, lợn nhà tôi ăn bã đậu mà lớn như thổi. Tháng này dư được 15 củ tiền cám, đúng là cứu tinh!",
       avatarBg: "bg-blue-100 text-blue-700"
     },
     {
       name: "Chị Mai (Đồng Nai)",
       role: "Hộ chăn nuôi gà thảo dược",
-      text: "Ủ bã đậu với mật mía theo công thức em hướng dẫn, gà ăn khỏe, phân khô hẳn không bị hôi chuồng. Gửi thêm cho chị 2 bộ nữa nhé.",
+      text: "Bất ngờ luôn em ơi. Gà trước đây rù mãi không lớn, giờ ăn thức ăn ủ men xong lông bóng mượt, đẻ trứng khỏe. Hàng xóm sang hỏi bí quyết chị giấu tiệt. Giao chị 5 can nữa nha.",
       avatarBg: "bg-green-100 text-green-700"
     }
   ];
@@ -146,7 +146,9 @@ export function SocialProof() {
 
   return (
     <SectionWrapper bgType="gray">
-      <SectionTitle subtitle="Video từ bà con chăn nuôi & phản hồi thực tế">BẰNG CHỨNG THỰC TẾ</SectionTitle>
+      <SectionTitle subtitle="Sự thật 100% từ những nông dân đã đổi đời">
+        <span className="text-[#D32F2F]">HỌ ĐÃ THOÁT NỢ VÀ LÀM GIÀU, CÒN BẠN?</span>
+      </SectionTitle>
       
       <div className="space-y-7">
         {/* Video trải nghiệm thực tế từ Facebook Reel */}
