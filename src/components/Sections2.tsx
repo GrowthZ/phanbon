@@ -56,7 +56,7 @@ export function ProductKit({ onOpenForm }: { onOpenForm: () => void }) {
   );
 }
 
-export function Materials() {
+export function Materials({ onOpenForm }: { onOpenForm: () => void }) {
   const materials = [
     { name: "Cám, bã cám", img: "https://loremflickr.com/300/300/bran,rice?lock=30" },
     { name: "Rau củ quả", img: "https://loremflickr.com/300/300/vegetables,scraps?lock=31" },
@@ -79,11 +79,23 @@ export function Materials() {
           </RevealOnScroll>
         ))}
       </div>
+
+      <RevealOnScroll delay={150} className="mt-8 max-w-md mx-auto">
+        <Button 
+          variant="primary" 
+          onClick={() => {
+            trackEvent('cta_materials_click');
+            onOpenForm();
+          }}
+        >
+          Nhận công thức ủ nguyên liệu miễn phí
+        </Button>
+      </RevealOnScroll>
     </SectionWrapper>
   );
 }
 
-export function Animals() {
+export function Animals({ onOpenForm }: { onOpenForm: () => void }) {
   const animals = [
     { name: "Trâu", icon: "🐃" },
     { name: "Bò", icon: "🐄" },
@@ -107,6 +119,18 @@ export function Animals() {
           </RevealOnScroll>
         ))}
       </div>
+
+      <RevealOnScroll delay={150} className="mt-8 max-w-md mx-auto">
+        <Button 
+          variant="secondary" 
+          onClick={() => {
+            trackEvent('cta_animals_click');
+            onOpenForm();
+          }}
+        >
+          Nhận tỷ lệ phối trộn cho vật nuôi của tôi
+        </Button>
+      </RevealOnScroll>
     </SectionWrapper>
   );
 }

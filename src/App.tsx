@@ -132,8 +132,8 @@ export default function App() {
       <Problems />
       <Solution onOpenForm={() => setShowPopup(true)} />
       <ProductKit onOpenForm={() => setShowPopup(true)} />
-      <Materials />
-      <Animals />
+      <Materials onOpenForm={() => setShowPopup(true)} />
+      <Animals onOpenForm={() => setShowPopup(true)} />
       <Process onOpenForm={() => setShowPopup(true)} />
       <Benefits />
       <OtherUses />
