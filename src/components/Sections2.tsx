@@ -3,10 +3,10 @@ import { Placeholder, Button, SectionTitle, SectionWrapper, RevealOnScroll, Prod
 import { BRAND, trackEvent } from '../constants';
 import { ShoppingBag, CheckCircle } from 'lucide-react';
 
-export function ProductKit({ onOpenForm }: { onOpenForm: () => void }) {
+export function ProductKit({ onOpenForm }: { onOpenForm: (type?: string) => void }) {
   const handlePackageClick = (pkgType: string) => {
     trackEvent('package_click', { package: pkgType });
-    onOpenForm();
+    onOpenForm(pkgType);
   };
 
   const inclusions = [

@@ -7,7 +7,13 @@ import { Process, Benefits, OtherUses, SocialProof } from './components/Sections
 import { LeadForm, FAQ, Policy } from './components/Sections4';
 import { Button } from './components/ui';
 
-function PopupForm({ onClose }: { onClose: () => void }) {
+function PopupForm({ 
+  config, 
+  onClose 
+}: { 
+  config: { title: string; subtitle: string; buttonText: string }; 
+  onClose: () => void; 
+}) {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -22,7 +28,7 @@ function PopupForm({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white rounded-3xl w-full max-w-md p-6 sm:p-8 relative shadow-2xl transition-all duration-300 border border-gray-100">
+      <div className="bg-white rounded-3xl w-full max-w-md p-6 sm:p-8 relative shadow-2xl transition-all duration-300 border border-gray-100 max-h-[90vh] overflow-y-auto">
         <button 
           onClick={onClose}
           className="absolute top-4 right-4 p-2 bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-800 transition-colors cursor-pointer"
@@ -33,11 +39,11 @@ function PopupForm({ onClose }: { onClose: () => void }) {
         {!submitted ? (
           <>
             <div className="text-center mb-6">
-              <h2 className="text-[22px] font-black text-[#2E7D32] uppercase mb-2 leading-tight">
-                NHẬN TƯ VẤN KỸ THUẬT
+              <h2 className="text-[20px] sm:text-[22px] font-black text-[#2E7D32] uppercase mb-2 leading-tight">
+                {config.title}
               </h2>
-              <p className="text-[14px] sm:text-[15px] text-[#4B5563] font-medium leading-relaxed">
-                Kỹ thuật viên sẽ gọi lại hướng dẫn cách ủ chi tiết nhất cho bà con.
+              <p className="text-[13px] sm:text-[14px] text-[#4B5563] font-medium leading-relaxed">
+                {config.subtitle}
               </p>
             </div>
 
@@ -63,9 +69,30 @@ function PopupForm({ onClose }: { onClose: () => void }) {
                   className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all" 
                 />
               </div>
+
+              <div>
+                <label className="block text-gray-700 font-bold text-xs mb-1">Tỉnh / Thành phố</label>
+                <input 
+                  type="text" 
+                  required 
+                  onFocus={handleInputFocus}
+                  placeholder="Ví dụ: Nghệ An, Hải Dương..."
+                  className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all" 
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-bold text-xs mb-1">Nội dung cần tư vấn (Không bắt buộc)</label>
+                <textarea 
+                  onFocus={handleInputFocus}
+                  placeholder="Ví dụ: Ủ bã đậu cho lợn, ủ rau cỏ cho gà..."
+                  rows={2}
+                  className="w-full py-2.5 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all resize-none" 
+                />
+              </div>
               
               <Button variant="primary" className="mt-2 py-4 w-full bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] border-none text-white text-[16px] font-bold">
-                GỬI YÊU CẦU TƯ VẤN
+                {config.buttonText}
               </Button>
             </form>
           </>
@@ -91,7 +118,11 @@ function PopupForm({ onClose }: { onClose: () => void }) {
 }
 
 export default function App() {
-  const [showPopup, setShowPopup] = useState(false);
+  const [popupConfig, setPopupConfig] = useState<{
+    title: string;
+    subtitle: string;
+    buttonText: string;
+  } | null>(null);
   const [showSticky, setShowSticky] = useState(false);
   const [scrolled50, setScrolled50] = useState(false);
   const [scrolled90, setScrolled90] = useState(false);
@@ -125,16 +156,42 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled50, scrolled90]);
 
+  const handleOpenForm = (context?: 'general' | 'materials' | 'animals' | '5kg' | '10kg') => {
+    let title = "NHẬN TƯ VẤN KỸ THUẬT";
+    let subtitle = "Kỹ thuật viên sẽ gọi lại hướng dẫn cách ủ chi tiết nhất cho bà con.";
+    let buttonText = "GỬI YÊU CẦU TƯ VẤN";
+
+    if (context === 'materials') {
+      title = "NHẬN CÔNG THỨC Ủ NGUYÊN LIỆU";
+      subtitle = "Tài liệu hướng dẫn cách ủ rau, cám, cỏ, bã đậu, bã bia... tỷ lệ chuẩn nhất.";
+      buttonText = "NHẬN CÔNG THỨC MIỄN PHÍ";
+    } else if (context === 'animals') {
+      title = "NHẬN TỶ LỆ PHỐI TRỘN VẬT NUÔI";
+      subtitle = "Hướng dẫn chi tiết cách trộn thức ăn vi sinh phù hợp cho từng nhóm gia súc, gia cầm.";
+      buttonText = "NHẬN TỶ LỆ PHỐI TRỘN";
+    } else if (context === '5kg') {
+      title = "NHẬN ƯU ĐÃI BỘ Ủ 5KG";
+      subtitle = "Đăng ký nhận bộ thử nghiệm 5kg Men Nhà Nông kèm quà tặng hướng dẫn kỹ thuật.";
+      buttonText = "ĐĂNG KÝ MUA BỘ 5KG";
+    } else if (context === '10kg') {
+      title = "ĐĂNG KÝ BỘ Ủ TIẾT KIỆM 10KG";
+      subtitle = "Nhận bộ 10kg ưu đãi lớn nhất cho trang trại vừa và nhỏ, hỗ trợ kỹ thuật 24/7.";
+      buttonText = "ĐĂNG KÝ MUA BỘ 10KG";
+    }
+
+    setPopupConfig({ title, subtitle, buttonText });
+  };
+
   return (
     <div className="w-full max-w-md mx-auto bg-white min-h-screen shadow-2xl relative pb-28">
       {/* 13 Sections */}
-      <Hero onOpenForm={() => setShowPopup(true)} />
+      <Hero onOpenForm={() => handleOpenForm('general')} />
       <Problems />
-      <Solution onOpenForm={() => setShowPopup(true)} />
-      <ProductKit onOpenForm={() => setShowPopup(true)} />
-      <Materials onOpenForm={() => setShowPopup(true)} />
-      <Animals onOpenForm={() => setShowPopup(true)} />
-      <Process onOpenForm={() => setShowPopup(true)} />
+      <Solution onOpenForm={() => handleOpenForm('general')} />
+      <ProductKit onOpenForm={(type) => handleOpenForm(type === '5kg' ? '5kg' : '10kg')} />
+      <Materials onOpenForm={() => handleOpenForm('materials')} />
+      <Animals onOpenForm={() => handleOpenForm('animals')} />
+      <Process onOpenForm={() => handleOpenForm('general')} />
       <Benefits />
       <OtherUses />
       <SocialProof />
@@ -186,7 +243,7 @@ export default function App() {
           <button 
             onClick={() => {
               trackEvent('sticky_cta_click');
-              setShowPopup(true);
+              handleOpenForm('general');
             }} 
             className="flex-1 flex flex-col items-center justify-center bg-[#2E7D32] text-white py-2.5 rounded-xl active:bg-green-800 transition-colors shadow-sm cursor-pointer"
           >
@@ -197,7 +254,7 @@ export default function App() {
       )}
 
       {/* Popup Form */}
-      {showPopup && <PopupForm onClose={() => setShowPopup(false)} />}
+      {popupConfig !== null && <PopupForm config={popupConfig} onClose={() => setPopupConfig(null)} />}
     </div>
   );
 }

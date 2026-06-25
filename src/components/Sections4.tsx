@@ -51,6 +51,27 @@ export function LeadForm() {
                 />
               </div>
 
+              <div>
+                <label className="block text-white font-bold text-sm mb-1">Tỉnh / Thành phố</label>
+                <input 
+                  type="text" 
+                  required 
+                  onFocus={handleInputFocus}
+                  placeholder="Ví dụ: Nghệ An, Hải Dương..."
+                  className="w-full h-12 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner" 
+                />
+              </div>
+
+              <div>
+                <label className="block text-white font-bold text-sm mb-1">Nội dung cần tư vấn (Không bắt buộc)</label>
+                <textarea 
+                  onFocus={handleInputFocus}
+                  placeholder="Ví dụ: Ủ bã đậu cho lợn, ủ rau cỏ cho gà..."
+                  rows={2}
+                  className="w-full py-2.5 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner resize-none text-[#1F2937]" 
+                />
+              </div>
+
               <button 
                 type="submit" 
                 className="w-full h-14 bg-gradient-to-r from-[#F9A825] to-[#F57F17] text-white font-black text-[18px] rounded-xl shadow-lg border border-[#F9A825] uppercase tracking-wide active:scale-[0.98] transition-all hover:translate-y-[-1px] duration-200 mt-2 cursor-pointer"
