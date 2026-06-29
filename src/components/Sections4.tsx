@@ -24,20 +24,17 @@ export function LeadForm() {
 
     const scriptUrl = import.meta.env.VITE_APPSCRIPT_URL;
     if (scriptUrl) {
-      fetch(scriptUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'text/plain'
-        },
-        body: JSON.stringify({
-          name,
-          phone,
-          province,
-          notes,
-          sheetName: TRACKING_CONFIG.sheetName,
-          branch: TRACKING_CONFIG.branchName
-        })
+      const params = new URLSearchParams({
+        name,
+        phone,
+        province,
+        notes,
+        sheetName: TRACKING_CONFIG.sheetName,
+        branch: TRACKING_CONFIG.branchName
+      });
+      fetch(`${scriptUrl}?${params.toString()}`, {
+        method: 'GET',
+        mode: 'no-cors'
       }).catch(err => console.error('Failed to submit to Apps Script:', err));
     } else {
       console.warn('VITE_APPSCRIPT_URL is not defined in environment variables.');
