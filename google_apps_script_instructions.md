@@ -8,18 +8,17 @@ Tài liệu này hướng dẫn cách cấu hình Google Sheet để tự độn
 Bà con truy cập vào Google Sheet muốn lưu dữ liệu, chọn **Tiện ích mở rộng (Extensions)** -> **Apps Script**, xóa hết mã hiện tại và dán đoạn code dưới đây vào:
 
 ```javascript
-function doPost(e) {
+function doGet(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(10000); // Đợi tối đa 10 giây nếu có nhiều luồng cùng gửi dữ liệu
   
   try {
-    var data = JSON.parse(e.postData.contents);
-    var name = data.name || "";
-    var phone = data.phone || "";
-    var province = data.province || "";
-    var notes = data.notes || "";
-    var sheetName = data.sheetName || "biofarm"; // Sheet mặc định
-    var branchName = data.branch || "";
+    var name = e.parameter.name || "";
+    var phone = e.parameter.phone || "";
+    var province = e.parameter.province || "";
+    var notes = e.parameter.notes || "";
+    var sheetName = e.parameter.sheetName || "biofarm"; // Sheet mặc định
+    var branchName = e.parameter.branch || "";
     
     var doc = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = doc.getSheetByName(sheetName);
