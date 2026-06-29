@@ -2,9 +2,9 @@ export const BRAND = {
   name: "Men Nhà Nông",
   productName: "Bộ men vi sinh ủ chín thức ăn chăn nuôi",
   company: "Men Nhà Nông",
-  hotline: "09xx xxx xxx",
-  zalo: "09xxxxxxx",
-  zaloUrl: "https://zalo.me/09xxxxxxx",
+  hotline: "0969 813 880",
+  zalo: "0969813880",
+  zaloUrl: "https://zalo.me/0969813880",
   region: "Giao hàng toàn quốc",
   stats: "Chuyên gia hỗ trợ kỹ thuật tận tình"
 };
