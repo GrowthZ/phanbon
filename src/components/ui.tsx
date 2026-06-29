@@ -10,6 +10,7 @@ export function RevealOnScroll({
   children: React.ReactNode; 
   delay?: number;
   className?: string;
+  key?: React.Key;
 }) {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -297,17 +298,19 @@ export function IngredientCard({ name, img }: { name: string; img: string }) {
       <div className="w-full aspect-square rounded-xl overflow-hidden mb-2 bg-gray-50">
         <img src={img} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
       </div>
-      <span className="font-bold text-[#1F2937] text-[13px] sm:text-[14px] text-center px-1 truncate w-full">{name}</span>
+      <span className="font-bold text-[#1F2937] text-[13px] sm:text-[14px] text-center px-1 leading-tight">{name}</span>
     </div>
   );
 }
 
 // Grid Animal Card
-export function AnimalCard({ name, icon }: { name: string; icon: string }) {
+export function AnimalCard({ name, img }: { name: string; img: string }) {
   return (
-    <div className="bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-sm border border-[#DDEEDC] hover:border-[#2E7D32] hover:shadow-md transition-all duration-300">
-      <span className="text-[36px] mb-2">{icon}</span>
-      <span className="font-bold text-[#1F2937] text-[14px] text-center">{name}</span>
+    <div className="flex flex-col items-center group bg-white border border-[#DDEEDC]/60 rounded-2xl p-2 hover:shadow-md transition-shadow duration-300">
+      <div className="w-full aspect-square rounded-xl overflow-hidden mb-2 bg-gray-50">
+        <img src={img} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+      </div>
+      <span className="font-bold text-[#1F2937] text-[13px] sm:text-[14px] text-center px-1 leading-tight">{name}</span>
     </div>
   );
 }

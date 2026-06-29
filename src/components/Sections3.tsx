@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Placeholder, SectionTitle, SectionWrapper, RevealOnScroll, StepCard, BenefitCard } from './ui';
 import { trackEvent } from '../constants';
-import { Star, PlayCircle, ShieldAlert } from 'lucide-react';
+import { Star, PlayCircle, ShieldAlert, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 export function Process({ onOpenForm }: { onOpenForm: () => void }) {
   const steps = [
@@ -107,7 +107,9 @@ export function OtherUses() {
 }
 
 export function SocialProof() {
-  const [activeImage, setActiveImage] = useState<string | null>(null);
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
   const videos = [
     {
@@ -143,6 +145,65 @@ export function SocialProof() {
     { src: "/reviews/review_6.jpg", alt: "Phản hồi Thu Dang" },
     { src: "/reviews/review_1.jpg", alt: "Can mật rỉ thực tế" }
   ];
+
+  const handlePrev = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (activeIdx === null) return;
+    const newIdx = (activeIdx - 1 + reviewImages.length) % reviewImages.length;
+    setActiveIdx(newIdx);
+    trackEvent('review_image_nav', { direction: 'prev', toSrc: reviewImages[newIdx].src });
+  };
+
+  const handleNext = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (activeIdx === null) return;
+    const newIdx = (activeIdx + 1) % reviewImages.length;
+    setActiveIdx(newIdx);
+    trackEvent('review_image_nav', { direction: 'next', toSrc: reviewImages[newIdx].src });
+  };
+
+  useEffect(() => {
+    if (activeIdx === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        handlePrev();
+      } else if (e.key === 'ArrowRight') {
+        handleNext();
+      } else if (e.key === 'Escape') {
+        setActiveIdx(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeIdx]);
+
+  // Touch handlers for swipe
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrev();
+    }
+  };
 
   return (
     <SectionWrapper bgType="gray">
@@ -184,7 +245,7 @@ export function SocialProof() {
                 <div 
                   onClick={() => {
                     trackEvent('review_image_click', { src: img.src });
-                    setActiveImage(img.src);
+                    setActiveIdx(idx);
                   }}
                   className="aspect-square rounded-2xl overflow-hidden shadow-sm border border-[#DDEEDC] cursor-pointer hover:border-[#2E7D32] transition-colors duration-300 bg-white group relative"
                 >
@@ -304,22 +365,64 @@ export function SocialProof() {
       </div>
 
       {/* Lightbox Modal */}
-      {activeImage && (
+      {activeIdx !== null && (
         <div 
-          className="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4"
-          onClick={() => setActiveImage(null)}
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center select-none"
+          onClick={() => setActiveIdx(null)}
         >
-          <div className="relative max-w-full max-h-[90vh] flex items-center justify-center">
-            <img 
-              src={activeImage} 
-              alt="Review phóng to" 
-              className="max-w-full max-h-[80vh] rounded-xl object-contain border-2 border-white/25 shadow-2xl animate-scale-in" 
-            />
+          {/* Close Button */}
+          <button 
+            onClick={() => setActiveIdx(null)}
+            className="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white rounded-full p-2.5 transition-colors cursor-pointer border border-white/10 z-50 flex items-center justify-center"
+            aria-label="Đóng"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {/* Active Image Indicator */}
+          <div className="absolute top-5 text-white/80 font-bold text-[14px] bg-black/40 px-3 py-1 rounded-full border border-white/10 z-40">
+            {activeIdx + 1} / {reviewImages.length}
+          </div>
+
+          <div className="relative w-full max-w-4xl px-4 flex items-center justify-center">
+            {/* Left Nav Button */}
             <button 
-              onClick={() => setActiveImage(null)}
-              className="absolute -top-12 right-0 bg-black/60 hover:bg-black/80 text-white rounded-full w-10 h-10 flex items-center justify-center text-xl font-bold transition-colors cursor-pointer border border-white/10"
+              onClick={handlePrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-40 bg-black/50 hover:bg-black/80 text-white rounded-full p-2.5 sm:p-3.5 transition-all cursor-pointer border border-white/10 active:scale-90 flex items-center justify-center"
+              aria-label="Ảnh trước"
             >
-              ✕
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            {/* Main Image with Swipable Gestures */}
+            <div 
+              className="relative max-w-full max-h-[80vh] flex flex-col items-center justify-center mx-12"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
+              <img 
+                src={reviewImages[activeIdx].src} 
+                alt={reviewImages[activeIdx].alt} 
+                className="max-w-full max-h-[70vh] rounded-xl object-contain border border-white/10 shadow-2xl animate-scale-in" 
+                onClick={(e) => {
+                  e.stopPropagation(); // Avoid closing lightbox on clicking image
+                  handleNext(); // Advance to next image when image is clicked
+                }}
+              />
+              {/* Caption */}
+              <p className="text-white/90 text-sm font-semibold mt-3 text-center bg-black/50 px-4 py-1.5 rounded-full border border-white/10 max-w-[85%] truncate">
+                {reviewImages[activeIdx].alt}
+              </p>
+            </div>
+
+            {/* Right Nav Button */}
+            <button 
+              onClick={handleNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-40 bg-black/50 hover:bg-black/80 text-white rounded-full p-2.5 sm:p-3.5 transition-all cursor-pointer border border-white/10 active:scale-90 flex items-center justify-center"
+              aria-label="Ảnh tiếp theo"
+            >
+              <ChevronRight className="w-6 h-6" />
             </button>
           </div>
         </div>
