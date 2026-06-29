@@ -31,7 +31,7 @@ export function ProductKit({ onOpenForm }: { onOpenForm: (type?: string) => void
             </li>
           ))}
         </ul>
-        <Placeholder text="Trọn bộ Men Nhà Nông" className="w-full aspect-video rounded-xl shadow-sm border border-gray-100" src="/images/product_kit.png" />
+        <Placeholder text="Trọn bộ Men Nhà Nông" className="w-full max-w-md mx-auto aspect-square rounded-xl shadow-sm border border-gray-100" src="/images/anh-san-pham2.jpeg" />
       </RevealOnScroll>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -58,14 +58,14 @@ export function ProductKit({ onOpenForm }: { onOpenForm: (type?: string) => void
 
 export function Materials({ onOpenForm }: { onOpenForm: () => void }) {
   const materials = [
-    { name: "Cám, bã cám", img: "https://loremflickr.com/300/300/bran,rice?lock=30" },
-    { name: "Rau củ quả", img: "https://loremflickr.com/300/300/vegetables,scraps?lock=31" },
-    { name: "Cỏ tươi", img: "https://loremflickr.com/300/300/grass,farming?lock=32" },
-    { name: "Thân ngô, rơm rạ", img: "https://loremflickr.com/300/300/cornstalk,straw?lock=33" },
-    { name: "Bã bia", img: "https://loremflickr.com/300/300/brewer,grains?lock=34" },
-    { name: "Bã đậu", img: "https://loremflickr.com/300/300/soybean,meal?lock=35" },
-    { name: "Sắn, bắp", img: "https://loremflickr.com/300/300/cassava,corn?lock=36" },
-    { name: "Phụ phẩm khác", img: "https://loremflickr.com/300/300/agricultural,waste?lock=37" }
+    { name: "Cám, bã cám", img: "/images/rice_bran.png" },
+    { name: "Rau củ quả", img: "/images/vegetable_scraps.png" },
+    { name: "Cỏ tươi", img: "/images/wild_grass.png" },
+    { name: "Thân ngô, rơm rạ", img: "/images/cornstalk_straw.png" },
+    { name: "Bã bia", img: "/images/spent_grains.png" },
+    { name: "Bã đậu", img: "/images/soybean_dregs.png" },
+    { name: "Sắn, bắp", img: "/images/cassava_corn.png" },
+    { name: "Phụ phẩm khác", img: "/images/farm_byproducts.png" }
   ];
 
   return (
@@ -97,15 +97,15 @@ export function Materials({ onOpenForm }: { onOpenForm: () => void }) {
 
 export function Animals({ onOpenForm }: { onOpenForm: () => void }) {
   const animals = [
-    { name: "Trâu", icon: "🐃" },
-    { name: "Bò", icon: "🐄" },
-    { name: "Dê", icon: "🐐" },
-    { name: "Lợn", icon: "🐖" },
-    { name: "Gà", icon: "🐔" },
-    { name: "Vịt", icon: "🦆" },
-    { name: "Cá", icon: "🐟" },
-    { name: "Tôm", icon: "🦐" },
-    { name: "Cua", icon: "🦀" }
+    { name: "Trâu", img: "/images/vietnamese_buffalo.png" },
+    { name: "Bò", img: "/images/vietnamese_cow.png" },
+    { name: "Dê", img: "/images/vietnamese_goat.png" },
+    { name: "Lợn", img: "/images/vietnamese_pig.png" },
+    { name: "Gà", img: "/images/vietnamese_chicken.png" },
+    { name: "Vịt", img: "/images/vietnamese_duck.png" },
+    { name: "Cá", img: "/images/vietnamese_fish.png" },
+    { name: "Tôm", img: "/images/vietnamese_shrimp.png" },
+    { name: "Cua", img: "/images/vietnamese_crab.png" }
   ];
 
   return (
@@ -115,7 +115,7 @@ export function Animals({ onOpenForm }: { onOpenForm: () => void }) {
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
         {animals.map((item, i) => (
           <RevealOnScroll key={i} delay={i * 50}>
-            <AnimalCard name={item.name} icon={item.icon} />
+            <AnimalCard name={item.name} img={item.img} />
           </RevealOnScroll>
         ))}
       </div>

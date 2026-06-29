@@ -303,11 +303,17 @@ export function IngredientCard({ name, img }: { name: string; img: string }) {
 }
 
 // Grid Animal Card
-export function AnimalCard({ name, icon }: { name: string; icon: string }) {
+export function AnimalCard({ name, icon, img }: { name: string; icon?: string; img?: string }) {
   return (
-    <div className="bg-white rounded-2xl p-4 flex flex-col items-center justify-center shadow-sm border border-[#DDEEDC] hover:border-[#2E7D32] hover:shadow-md transition-all duration-300">
-      <span className="text-[36px] mb-2">{icon}</span>
-      <span className="font-bold text-[#1F2937] text-[14px] text-center">{name}</span>
+    <div className="bg-white rounded-2xl p-3 flex flex-col items-center justify-center shadow-sm border border-[#DDEEDC] hover:border-[#2E7D32] hover:shadow-md transition-all duration-300">
+      {img ? (
+        <div className="w-full aspect-square rounded-xl overflow-hidden mb-2 bg-gray-50">
+          <img src={img} alt={name} className="w-full h-full object-cover" />
+        </div>
+      ) : (
+        <span className="text-[36px] mb-2">{icon}</span>
+      )}
+      <span className="font-bold text-[#1F2937] text-[13px] sm:text-[14px] text-center">{name}</span>
     </div>
   );
 }
