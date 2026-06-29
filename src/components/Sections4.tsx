@@ -31,7 +31,7 @@ export function LeadForm() {
       notes
     });
 
-    const scriptUrl = import.meta.env.VITE_APPSCRIPT_URL;
+    const scriptUrl = import.meta.env.VITE_APPSCRIPT_URL || 'https://script.google.com/macros/s/AKfycbwAgwzxj8zD4Fv-vUx2nm1dDfiO3kiu6BMz-WqdEm4DjYnZKU5oiikW32CMeMX8ujM/exec';
     if (scriptUrl) {
       const params = new URLSearchParams({
         name,
