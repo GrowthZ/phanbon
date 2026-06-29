@@ -21,9 +21,9 @@ export function ProductKit({ onOpenForm }: { onOpenForm: (type?: string) => void
   return (
     <SectionWrapper bgType="gray">
       <SectionTitle subtitle="Trọn bộ vũ khí bí mật giúp bạn x2 lợi nhuận">
-        <span className="text-[#D32F2F]">ƯU ĐÁI KHỦNG ĐẾN NỬA ĐÊM</span>
+        <span className="text-[#D32F2F]">ƯU ĐÃI KHỦNG ĐẾN NỬA ĐÊM</span>
       </SectionTitle>
-      
+
       <RevealOnScroll className="bg-white rounded-3xl p-5 sm:p-6 shadow-xl border-t-8 border-[#FF9800] mb-8 relative">
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#FF9800] text-white font-black text-sm px-4 py-1 rounded-full flex items-center gap-1 shadow-md">
           <Clock className="w-4 h-4 animate-spin-slow" /> CHỈ CÒN 50 SUẤT HÔM NAY
@@ -41,19 +41,19 @@ export function ProductKit({ onOpenForm }: { onOpenForm: (type?: string) => void
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <RevealOnScroll delay={100}>
-          <ProductPackageCard 
-            title="BỘ Ủ 5KG (DÙNG THỬ)" 
-            desc="Đầu tư SIÊU THẤP, hoàn vốn SIÊU NHANH. Lựa chọn an toàn cho hộ chăn nuôi quy mô nhỏ." 
-            onBtnClick={() => handlePackageClick('5kg')} 
+          <ProductPackageCard
+            title="BỘ Ủ 5KG (DÙNG THỬ)"
+            desc="Đầu tư SIÊU THẤP, hoàn vốn SIÊU NHANH. Lựa chọn an toàn cho hộ chăn nuôi quy mô nhỏ."
+            onBtnClick={() => handlePackageClick('5kg')}
           />
         </RevealOnScroll>
 
         <RevealOnScroll delay={200}>
-          <ProductPackageCard 
-            title="BỘ Ủ 10KG (TIẾT KIỆM)" 
-            desc="LỰA CHỌN THÔNG MINH NHẤT! Phù hợp trang trại vừa và nhỏ muốn CẮT GIẢM 50% CHI PHÍ NGAY LẬP TỨC." 
+          <ProductPackageCard
+            title="BỘ Ủ 10KG (TIẾT KIỆM)"
+            desc="LỰA CHỌN THÔNG MINH NHẤT! Phù hợp trang trại vừa và nhỏ muốn CẮT GIẢM 50% CHI PHÍ NGAY LẬP TỨC."
             isPromo={true}
-            onBtnClick={() => handlePackageClick('10kg')} 
+            onBtnClick={() => handlePackageClick('10kg')}
           />
         </RevealOnScroll>
       </div>
@@ -76,9 +76,9 @@ export function Materials({ onOpenForm }: { onOpenForm: () => void }) {
   return (
     <SectionWrapper bgType="white">
       <SectionTitle subtitle="Đừng vứt đi bất cứ thứ gì, tất cả đều là tiền!">
-        BẤT KỲ NGUYÊN LIỆU NÀO <br/> <span className="text-[#F57F17]">CŨNG BIẾN THÀNH VÀNG!</span>
+        BẤT KỲ NGUYÊN LIỆU NÀO <br /> <span className="text-[#F57F17]">CŨNG BIẾN THÀNH VÀNG!</span>
       </SectionTitle>
-      
+
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {materials.map((item, i) => (
           <RevealOnScroll key={i} delay={i * 60}>
@@ -88,8 +88,8 @@ export function Materials({ onOpenForm }: { onOpenForm: () => void }) {
       </div>
 
       <RevealOnScroll delay={150} className="mt-8 max-w-md mx-auto">
-        <Button 
-          variant="primary" 
+        <Button
+          variant="primary"
           onClick={() => {
             trackEvent('cta_materials_click');
             onOpenForm();
@@ -119,9 +119,9 @@ export function Animals({ onOpenForm }: { onOpenForm: () => void }) {
   return (
     <SectionWrapper bgType="green-light">
       <SectionTitle subtitle="Đề kháng như thép - Không lo dịch bệnh">
-        VẬT NUÔI NÀO <br/> CŨNG <span className="text-[#D32F2F]">LỚN NHANH NHƯ THỔI!</span>
+        VẬT NUÔI NÀO <br /> CŨNG <span className="text-[#D32F2F]">LỚN NHANH NHƯ THỔI!</span>
       </SectionTitle>
-      
+
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
         {animals.map((item, i) => (
           <RevealOnScroll key={i} delay={i * 50}>
@@ -131,8 +131,8 @@ export function Animals({ onOpenForm }: { onOpenForm: () => void }) {
       </div>
 
       <RevealOnScroll delay={150} className="mt-8 max-w-md mx-auto">
-        <Button 
-          variant="secondary" 
+        <Button
+          variant="secondary"
           onClick={() => {
             trackEvent('cta_animals_click');
             onOpenForm();
