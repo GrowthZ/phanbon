@@ -1,14 +1,48 @@
 import React, { useState } from 'react';
 import { SectionTitle, SectionWrapper, RevealOnScroll, FAQItem } from './ui';
-import { BRAND, trackEvent } from '../constants';
+import { BRAND, trackEvent, TRACKING_CONFIG } from '../constants';
 import { ShieldCheck, Truck, RefreshCcw, CheckCircle } from 'lucide-react';
 
 export function LeadForm() {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    trackEvent('lead_form_submit');
+    
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const phone = formData.get('phone') as string;
+    const province = formData.get('province') as string;
+    const notes = formData.get('notes') as string;
+
+    trackEvent('lead_form_submit', {
+      name,
+      phone,
+      province,
+      notes
+    });
+
+    const scriptUrl = import.meta.env.VITE_APPSCRIPT_URL;
+    if (scriptUrl) {
+      fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: JSON.stringify({
+          name,
+          phone,
+          province,
+          notes,
+          sheetName: TRACKING_CONFIG.sheetName,
+          branch: TRACKING_CONFIG.branchName
+        })
+      }).catch(err => console.error('Failed to submit to Apps Script:', err));
+    } else {
+      console.warn('VITE_APPSCRIPT_URL is not defined in environment variables.');
+    }
+
     setSubmitted(true);
   };
 
@@ -33,6 +67,7 @@ export function LeadForm() {
                 <label className="block text-white font-bold text-sm mb-1">Họ và Tên</label>
                 <input 
                   type="text" 
+                  name="name"
                   required 
                   onFocus={handleInputFocus}
                   placeholder="Họ và Tên của bác/anh/chị"
@@ -44,6 +79,7 @@ export function LeadForm() {
                 <label className="block text-white font-bold text-sm mb-1">Số điện thoại Zalo/Nghe gọi</label>
                 <input 
                   type="tel" 
+                  name="phone"
                   required 
                   onFocus={handleInputFocus}
                   placeholder="Số điện thoại của bác"
@@ -55,6 +91,7 @@ export function LeadForm() {
                 <label className="block text-white font-bold text-sm mb-1">Tỉnh / Thành phố</label>
                 <input 
                   type="text" 
+                  name="province"
                   required 
                   onFocus={handleInputFocus}
                   placeholder="Ví dụ: Nghệ An, Hải Dương..."
@@ -65,6 +102,7 @@ export function LeadForm() {
               <div>
                 <label className="block text-white font-bold text-sm mb-1">Nội dung cần tư vấn (Không bắt buộc)</label>
                 <textarea 
+                  name="notes"
                   onFocus={handleInputFocus}
                   placeholder="Ví dụ: Ủ bã đậu cho lợn, ủ rau cỏ cho gà..."
                   rows={2}
