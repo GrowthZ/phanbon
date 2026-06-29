@@ -36,7 +36,7 @@ export function ProductKit({ onOpenForm }: { onOpenForm: (type?: string) => void
             </li>
           ))}
         </ul>
-        <Placeholder text="Trọn bộ Men Nhà Nông" className="w-full aspect-video rounded-xl shadow-md border-2 border-[#FF9800]/20" src="/images/product_kit.png" />
+        <Placeholder text="Trọn bộ Men Nhà Nông" className="w-full max-w-md mx-auto aspect-square rounded-xl shadow-md border-2 border-[#FF9800]/20" src="/images/anh-san-pham2.jpeg" />
       </RevealOnScroll>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
