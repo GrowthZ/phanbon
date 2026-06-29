@@ -5,15 +5,24 @@ import { ShieldCheck, Truck, RefreshCcw, CheckCircle } from 'lucide-react';
 
 export function LeadForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError('');
     
     const formData = new FormData(e.currentTarget);
     const name = formData.get('name') as string;
     const phone = formData.get('phone') as string;
     const province = formData.get('province') as string;
     const notes = formData.get('notes') as string;
+
+    // Validate số điện thoại (10 chữ số, bắt đầu bằng số 0)
+    const phoneRegex = /^(0[3|5|7|8|9])+([0-9]{8})\b/;
+    if (!phoneRegex.test(phone)) {
+      setError('Vui lòng nhập đúng số điện thoại (10 số, bắt đầu bằng 0).');
+      return;
+    }
 
     trackEvent('lead_form_submit', {
       name,
@@ -59,8 +68,14 @@ export function LeadForm() {
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#F9A825]/20 rounded-full blur-3xl"></div>
           
           {!submitted ? (
-            <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
-              <div>
+            <div className="relative z-10">
+              {error && (
+                <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm font-semibold rounded-lg text-center border border-red-100 animate-fade-in">
+                  {error}
+                </div>
+              )}
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
                 <label className="block text-white font-bold text-sm mb-1">Họ và Tên</label>
                 <input 
                   type="text" 
@@ -117,6 +132,7 @@ export function LeadForm() {
                 * Thông tin của bà con được bảo mật tuyệt đối. Chúng tôi sẽ bảo mật và liên hệ trong thời gian sớm nhất.
               </p>
             </form>
+            </div>
           ) : (
             <div className="text-center py-8 bg-black/20 rounded-2xl border border-white/10 backdrop-blur-sm relative z-10">
               <div className="w-16 h-16 bg-[#4CAF50] text-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg border-4 border-white/20">

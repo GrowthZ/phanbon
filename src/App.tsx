@@ -15,10 +15,50 @@ function PopupForm({
   onClose: () => void; 
 }) {
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); 
-    trackEvent('lead_form_submit');
+    setError('');
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const phone = formData.get('phone') as string;
+    const province = formData.get('province') as string;
+    const notes = formData.get('notes') as string;
+
+    // Validate số điện thoại (10 chữ số, bắt đầu bằng số 0)
+    const phoneRegex = /^(0[3|5|7|8|9])+([0-9]{8})\b/;
+    if (!phoneRegex.test(phone)) {
+      setError('Vui lòng nhập đúng số điện thoại (10 số, bắt đầu bằng 0).');
+      return;
+    }
+
+    trackEvent('lead_form_submit', {
+      name,
+      phone,
+      province,
+      notes
+    });
+
+    const scriptUrl = import.meta.env.VITE_APPSCRIPT_URL;
+    if (scriptUrl) {
+      const params = new URLSearchParams({
+        name,
+        phone,
+        province,
+        notes,
+        sheetName: TRACKING_CONFIG.sheetName,
+        branch: TRACKING_CONFIG.branchName
+      });
+      fetch(`${scriptUrl}?${params.toString()}`, {
+        method: 'GET',
+        mode: 'no-cors'
+      }).catch(err => console.error('Failed to submit to Apps Script:', err));
+    } else {
+      console.warn('VITE_APPSCRIPT_URL is not defined in environment variables.');
+    }
+
     setSubmitted(true); 
   };
 
@@ -47,11 +87,18 @@ function PopupForm({
               </p>
             </div>
 
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 text-red-600 text-sm font-semibold rounded-lg text-center border border-red-100 animate-fade-in">
+                {error}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-gray-700 font-bold text-xs mb-1">Họ và Tên</label>
                 <input 
                   type="text" 
+                  name="name"
                   required 
                   onFocus={handleInputFocus}
                   placeholder="Họ và tên của bác"
@@ -63,6 +110,7 @@ function PopupForm({
                 <label className="block text-gray-700 font-bold text-xs mb-1">Số điện thoại Zalo/Nghe gọi</label>
                 <input 
                   type="tel" 
+                  name="phone"
                   required 
                   onFocus={handleInputFocus}
                   placeholder="Số điện thoại Zalo/Nghe gọi"
@@ -74,6 +122,7 @@ function PopupForm({
                 <label className="block text-gray-700 font-bold text-xs mb-1">Tỉnh / Thành phố</label>
                 <input 
                   type="text" 
+                  name="province"
                   required 
                   onFocus={handleInputFocus}
                   placeholder="Ví dụ: Nghệ An, Hải Dương..."
@@ -84,6 +133,7 @@ function PopupForm({
               <div>
                 <label className="block text-gray-700 font-bold text-xs mb-1">Nội dung cần tư vấn (Không bắt buộc)</label>
                 <textarea 
+                  name="notes"
                   onFocus={handleInputFocus}
                   placeholder="Ví dụ: Ủ bã đậu cho lợn, ủ rau cỏ cho gà..."
                   rows={2}
