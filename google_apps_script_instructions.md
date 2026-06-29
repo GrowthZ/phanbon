@@ -8,17 +8,23 @@ Tài liệu này hướng dẫn cách cấu hình Google Sheet để tự độn
 Bà con truy cập vào Google Sheet muốn lưu dữ liệu, chọn **Tiện ích mở rộng (Extensions)** -> **Apps Script**, xóa hết mã hiện tại và dán đoạn code dưới đây vào:
 
 ```javascript
-function doGet(e) {
+function processRequest(e) {
   var lock = LockService.getScriptLock();
   lock.tryLock(10000); // Đợi tối đa 10 giây nếu có nhiều luồng cùng gửi dữ liệu
   
   try {
-    var name = e.parameter.name || "";
-    var phone = e.parameter.phone || "";
-    var province = e.parameter.province || "";
-    var notes = e.parameter.notes || "";
-    var sheetName = e.parameter.sheetName || "biofarm"; // Sheet mặc định
-    var branchName = e.parameter.branch || "";
+    // 1. Đọc dữ liệu từ URL parameters (GET) hoặc Form-data (POST)
+    var name = (e.parameter && e.parameter.name) ? e.parameter.name : "";
+    var phone = (e.parameter && e.parameter.phone) ? e.parameter.phone : "";
+    var province = (e.parameter && e.parameter.province) ? e.parameter.province : "";
+    var notes = (e.parameter && e.parameter.notes) ? e.parameter.notes : "";
+    var sheetName = (e.parameter && e.parameter.sheetName) ? e.parameter.sheetName : "biofarm"; 
+    var branchName = (e.parameter && e.parameter.branch) ? e.parameter.branch : "";
+
+    // 2. Nếu không có dữ liệu (có thể do click trực tiếp vào link trên trình duyệt để test) -> Bỏ qua không ghi vào sheet
+    if (!name && !phone) {
+      return ContentService.createTextOutput("Apps Script đang hoạt động tốt. Hãy gửi form từ Landing Page để ghi dữ liệu.");
+    }
     
     var doc = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = doc.getSheetByName(sheetName);
@@ -47,6 +53,14 @@ function doGet(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+function doGet(e) {
+  return processRequest(e);
+}
+
+function doPost(e) {
+  return processRequest(e);
 }
 ```
 
