@@ -13,13 +13,31 @@ function processRequest(e) {
   lock.tryLock(10000); // Đợi tối đa 10 giây nếu có nhiều luồng cùng gửi dữ liệu
   
   try {
-    // 1. Đọc dữ liệu từ URL parameters (GET) hoặc Form-data (POST)
+    // 0. Chống lỗi khi bấm nút "Run" trực tiếp trong trình duyệt code Apps Script (lúc này e bị undefined)
+    if (!e) {
+      return ContentService.createTextOutput("Code đã lưu. Vui lòng nhấn Deploy -> New Deployment để dùng.");
+    }
+
+    // 1. Đọc dữ liệu từ URL parameters (GET)
     var name = (e.parameter && e.parameter.name) ? e.parameter.name : "";
     var phone = (e.parameter && e.parameter.phone) ? e.parameter.phone : "";
     var province = (e.parameter && e.parameter.province) ? e.parameter.province : "";
     var notes = (e.parameter && e.parameter.notes) ? e.parameter.notes : "";
     var sheetName = (e.parameter && e.parameter.sheetName) ? e.parameter.sheetName : "biofarm"; 
     var branchName = (e.parameter && e.parameter.branch) ? e.parameter.branch : "";
+
+    // Dự phòng: Nếu website vẫn đang gửi POST kiểu cũ (chưa xóa cache)
+    if (!name && !phone && e.postData && e.postData.contents) {
+      try {
+        var data = JSON.parse(e.postData.contents);
+        name = data.name || "";
+        phone = data.phone || "";
+        province = data.province || "";
+        notes = data.notes || "";
+        sheetName = data.sheetName || "biofarm";
+        branchName = data.branch || "";
+      } catch (err) {}
+    }
 
     // 2. Nếu không có dữ liệu (có thể do click trực tiếp vào link trên trình duyệt để test) -> Bỏ qua không ghi vào sheet
     if (!name && !phone) {
