@@ -9,9 +9,11 @@ import { Button } from './components/ui';
 
 function PopupForm({ 
   config, 
+  context,
   onClose 
 }: { 
   config: { title: string; subtitle: string; buttonText: string }; 
+  context: string;
   onClose: () => void; 
 }) {
   const [submitted, setSubmitted] = useState(false);
@@ -49,7 +51,7 @@ function PopupForm({
         province,
         notes,
         sheetName: TRACKING_CONFIG.sheetName,
-        branch: TRACKING_CONFIG.branchName
+        branch: context
       });
       fetch(`${scriptUrl}?${params.toString()}`, {
         method: 'GET',
@@ -210,26 +212,31 @@ export default function App() {
     let title = "NHẬN TƯ VẤN KỸ THUẬT";
     let subtitle = "Kỹ thuật viên sẽ gọi lại hướng dẫn cách ủ chi tiết nhất cho bà con.";
     let buttonText = "GỬI YÊU CẦU TƯ VẤN";
+    let contextText = "Popup - Tư vấn chung";
 
     if (context === 'materials') {
       title = "NHẬN CÔNG THỨC Ủ NGUYÊN LIỆU";
       subtitle = "Tài liệu hướng dẫn cách ủ rau, cám, cỏ, bã đậu, bã bia... tỷ lệ chuẩn nhất.";
       buttonText = "NHẬN CÔNG THỨC MIỄN PHÍ";
+      contextText = "Popup - Công thức nguyên liệu";
     } else if (context === 'animals') {
       title = "NHẬN TỶ LỆ PHỐI TRỘN VẬT NUÔI";
       subtitle = "Hướng dẫn chi tiết cách trộn thức ăn vi sinh phù hợp cho từng nhóm gia súc, gia cầm.";
       buttonText = "NHẬN TỶ LỆ PHỐI TRỘN";
+      contextText = "Popup - Tỷ lệ phối trộn";
     } else if (context === '5kg') {
       title = "NHẬN ƯU ĐÃI BỘ Ủ 5KG";
       subtitle = "Đăng ký nhận bộ thử nghiệm 5kg Men Nhà Nông kèm quà tặng hướng dẫn kỹ thuật.";
       buttonText = "ĐĂNG KÝ MUA BỘ 5KG";
+      contextText = "Popup - Mua bộ 5kg";
     } else if (context === '10kg') {
       title = "ĐĂNG KÝ BỘ Ủ TIẾT KIỆM 10KG";
       subtitle = "Nhận bộ 10kg ưu đãi lớn nhất cho trang trại vừa và nhỏ, hỗ trợ kỹ thuật 24/7.";
       buttonText = "ĐĂNG KÝ MUA BỘ 10KG";
+      contextText = "Popup - Mua bộ 10kg";
     }
 
-    setPopupConfig({ title, subtitle, buttonText });
+    setPopupConfig({ title, subtitle, buttonText, context: contextText });
   };
 
   return (
@@ -304,7 +311,7 @@ export default function App() {
       )}
 
       {/* Popup Form */}
-      {popupConfig !== null && <PopupForm config={popupConfig} onClose={() => setPopupConfig(null)} />}
+      {popupConfig !== null && <PopupForm config={popupConfig} context={popupConfig.context} onClose={() => setPopupConfig(null)} />}
     </div>
   );
 }

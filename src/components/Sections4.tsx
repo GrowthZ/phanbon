@@ -39,7 +39,7 @@ export function LeadForm() {
         province,
         notes,
         sheetName: TRACKING_CONFIG.sheetName,
-        branch: TRACKING_CONFIG.branchName
+        branch: "Form - Cuối trang"
       });
       fetch(`${scriptUrl}?${params.toString()}`, {
         method: 'GET',
