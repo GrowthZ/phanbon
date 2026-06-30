@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Phone, MessageCircle, FileText, X } from 'lucide-react';
-import { BRAND, trackEvent } from './constants';
+import { BRAND, trackEvent, TRACKING_CONFIG } from './constants';
 import { Hero, Problems, Solution } from './components/Sections1';
 import { ProductKit, Materials, Animals } from './components/Sections2';
 import { Process, Benefits, OtherUses, SocialProof } from './components/Sections3';

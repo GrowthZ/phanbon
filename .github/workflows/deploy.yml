@@ -25,6 +25,8 @@ jobs:
 
       - name: Build Project
         run: npm run build
+        env:
+          VITE_APPSCRIPT_URL: ${{ secrets.VITE_APPSCRIPT_URL }}
 
       - name: Set Deployment Path based on Branch
         id: set-path
