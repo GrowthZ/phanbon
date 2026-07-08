@@ -6,6 +6,7 @@ import { ProductKit, Materials, Animals } from './components/Sections2';
 import { Process, Benefits, OtherUses, SocialProof } from './components/Sections3';
 import { LeadForm, FAQ, Policy } from './components/Sections4';
 import { Button } from './components/ui';
+import { LiveBuyersPopup } from './components/LiveBuyersPopup';
 
 function PopupForm({ 
   config, 
@@ -312,6 +313,9 @@ export default function App() {
 
       {/* Popup Form */}
       {popupConfig !== null && <PopupForm config={popupConfig} context={popupConfig.context} onClose={() => setPopupConfig(null)} />}
+
+      {/* Live Buyers Notification Popup */}
+      <LiveBuyersPopup onClick={() => handleOpenForm('general')} />
     </div>
   );
 }
