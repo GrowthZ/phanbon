@@ -34,6 +34,28 @@ export function ProductKit({ onOpenForm }: { onOpenForm: (type?: string) => void
         <Placeholder text="Trọn bộ Men Nhà Nông" className="w-full max-w-md mx-auto aspect-square rounded-xl shadow-sm border border-gray-100" src="/images/anh-san-pham2.jpeg" />
       </RevealOnScroll>
 
+      <RevealOnScroll className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-100/60 rounded-3xl p-5 mb-8 shadow-sm flex flex-col items-center">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="relative flex h-3.5 w-3.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-red-500"></span>
+          </span>
+          <span className="text-[13px] sm:text-[14px] text-red-700 font-extrabold uppercase tracking-wide text-center">
+            🔥 ƯU ĐÃI KHAN HIẾM: CHỈ CÒN LẠI 7 BỘ CÓ GIÁ KHUYẾN MÃI HÔM NAY!
+          </span>
+        </div>
+        <div className="w-full bg-gray-200/80 rounded-full h-3 overflow-hidden mb-2 relative">
+          <div 
+            className="bg-gradient-to-r from-red-500 to-orange-500 h-full rounded-full transition-all duration-1000 ease-out"
+            style={{ width: '93%' }}
+          />
+        </div>
+        <div className="flex justify-between w-full text-[11px] sm:text-[12px] text-gray-500 font-bold">
+          <span>Đã bán: 93 bộ (93%)</span>
+          <span className="text-red-600 animate-pulse">Còn lại: 7 bộ cuối cùng</span>
+        </div>
+      </RevealOnScroll>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <RevealOnScroll delay={100}>
           <ProductPackageCard 
