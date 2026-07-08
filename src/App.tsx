@@ -30,10 +30,9 @@ function PopupForm({
     const province = formData.get('province') as string;
     const notes = formData.get('notes') as string;
 
-    // Validate số điện thoại (10 chữ số, bắt đầu bằng số 0)
-    const phoneRegex = /^(0[3|5|7|8|9])+([0-9]{8})\b/;
-    if (!phoneRegex.test(phone)) {
-      setError('Vui lòng nhập đúng số điện thoại (10 số, bắt đầu bằng 0).');
+    // Kiểm tra số điện thoại có chứa ký tự hoặc số
+    if (!phone || !phone.trim()) {
+      setError('Vui lòng nhập số điện thoại.');
       return;
     }
 
