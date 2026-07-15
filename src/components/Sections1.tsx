@@ -23,52 +23,53 @@ export function Hero({ onOpenForm }: { onOpenForm: () => void }) {
         </RevealOnScroll>
 
         <RevealOnScroll delay={100}>
-          <h1 className="text-[32px] sm:text-[40px] font-black text-[#B71C1C] uppercase leading-[1.1] mb-5 drop-shadow-sm">
+          <h1 className="text-[32px] sm:text-[38px] font-black text-[#B71C1C] uppercase leading-[1.1] mb-5 drop-shadow-sm">
             99% NGƯỜI NÔNG DÂN <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF8F00] to-[#E65100]">
               ĐÃ GIẢM 50% CHI PHÍ CHĂN NUÔI
             </span> <br />
-            NHỜ CÁCH NÀY 👇 👇 👇
-          </h1>
-        </RevealOnScroll>
+            NHỜ CÁCH NÀY </br>
+            👇 👇 👇
+        </h1>
+      </RevealOnScroll>
 
-        <RevealOnScroll delay={200}>
-          <p className="text-[16px] sm:text-[18px] text-[#374151] font-bold leading-relaxed mb-8 px-2 bg-white/60 p-3 rounded-xl border border-white">
-            Bí quyết <span className="text-[#D32F2F] underline decoration-2 underline-offset-2">chưa từng tiết lộ</span> giúp vật nuôi lớn nhanh như thổi, khỏe mạnh, không lo dịch bệnh. Đọc ngay trước khi đối thủ của bạn biết!
-          </p>
-        </RevealOnScroll>
+      <RevealOnScroll delay={200}>
+        <p className="text-[16px] sm:text-[18px] text-[#374151] font-bold leading-relaxed mb-8 px-2 bg-white/60 p-3 rounded-xl border border-white">
+          Bí quyết <span className="text-[#D32F2F] underline decoration-2 underline-offset-2">chưa từng tiết lộ</span> giúp vật nuôi lớn nhanh như thổi, khỏe mạnh, không lo dịch bệnh. Đọc ngay trước khi đối thủ của bạn biết!
+        </p>
+      </RevealOnScroll>
 
-        <RevealOnScroll delay={300} className="mb-10 flex justify-center">
-          <div className="w-full max-w-[340px] aspect-[9/16] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(211,47,47,0.3)] border-4 border-[#D32F2F] bg-black relative">
-            <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded animate-pulse z-10">
-              ● TRỰC TIẾP TỪ TRANG TRẠI
-            </div>
-            <iframe
-              src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F831586530047269%2F&show_text=false&t=0"
-              className="w-full h-full border-none"
-              scrolling="no"
-              allowFullScreen={true}
-              allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            ></iframe>
+      <RevealOnScroll delay={300} className="mb-10 flex justify-center">
+        <div className="w-full max-w-[340px] aspect-[9/16] rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(211,47,47,0.3)] border-4 border-[#D32F2F] bg-black relative">
+          <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded animate-pulse z-10">
+            ● TRỰC TIẾP TỪ TRANG TRẠI
           </div>
-        </RevealOnScroll>
+          <iframe
+            src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F831586530047269%2F&show_text=false&t=0"
+            className="w-full h-full border-none"
+            scrolling="no"
+            allowFullScreen={true}
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+          ></iframe>
+        </div>
+      </RevealOnScroll>
 
-        <RevealOnScroll delay={400} className="space-y-4">
-          <Button variant="primary" onClick={handleCtaClick} className="w-full shadow-xl bg-gradient-to-r from-[#D32F2F] to-[#C62828] hover:scale-[1.02] text-[18px] py-4 h-auto uppercase tracking-wide border-2 border-[#FFCDD2] text-white font-black animate-bounce-slow">
-            <Zap className="inline-block mr-2 w-6 h-6" /> BẤM MUA - giảm ngay 50%
+      <RevealOnScroll delay={400} className="space-y-4">
+        <Button variant="primary" onClick={handleCtaClick} className="w-full shadow-xl bg-gradient-to-r from-[#D32F2F] to-[#C62828] hover:scale-[1.02] text-[18px] py-4 h-auto uppercase tracking-wide border-2 border-[#FFCDD2] text-white font-black animate-bounce-slow">
+          <Zap className="inline-block mr-2 w-6 h-6" /> BẤM MUA - giảm ngay 50%
+        </Button>
+        <div className="flex items-center justify-center gap-2 text-red-600 text-[12px] sm:text-[13px] font-extrabold bg-red-50/70 border border-red-100/50 py-2 px-3 rounded-xl">
+          <span className="w-2 h-2 rounded-full bg-red-500 block animate-pulse"></span>
+          <span>⚡ Chỉ còn 7 suất tặng kèm rỉ mật & tài liệu hướng dẫn hôm nay!</span>
+        </div>
+        <a href={BRAND.zaloUrl} target="_blank" rel="noreferrer" onClick={handleZaloClick} className="block mt-4">
+          <Button variant="outline" className="w-full border-2 border-[#1E88E5] text-[#1E88E5] hover:bg-[#E3F2FD] font-bold">
+            <MessageCircle className="mr-2 w-6 h-6" /> NHẮN ZALO NHẬN TƯ VẤN KÍN
           </Button>
-          <div className="flex items-center justify-center gap-2 text-red-600 text-[12px] sm:text-[13px] font-extrabold bg-red-50/70 border border-red-100/50 py-2 px-3 rounded-xl">
-            <span className="w-2 h-2 rounded-full bg-red-500 block animate-pulse"></span>
-            <span>⚡ Chỉ còn 7 suất tặng kèm rỉ mật & tài liệu hướng dẫn hôm nay!</span>
-          </div>
-          <a href={BRAND.zaloUrl} target="_blank" rel="noreferrer" onClick={handleZaloClick} className="block mt-4">
-            <Button variant="outline" className="w-full border-2 border-[#1E88E5] text-[#1E88E5] hover:bg-[#E3F2FD] font-bold">
-              <MessageCircle className="mr-2 w-6 h-6" /> NHẮN ZALO NHẬN TƯ VẤN KÍN
-            </Button>
-          </a>
-        </RevealOnScroll>
-      </div>
-    </section>
+        </a>
+      </RevealOnScroll>
+    </div>
+    </section >
   );
 }
 
