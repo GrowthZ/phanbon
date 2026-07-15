@@ -328,17 +328,18 @@ export default function App() {
     <div className="w-full max-w-md mx-auto bg-white min-h-screen shadow-2xl relative pb-28">
       {/* 13 Sections */}
       <Hero onOpenForm={() => scrollToForm('lead-form-top', '10kg')} />
-      <Problems />
-      <Solution onOpenForm={() => scrollToForm('lead-form-top', '10kg')} />
-      <ProductKit onOpenForm={(type) => scrollToForm('lead-form-top', type === '5kg' ? '5kg' : '10kg')} />
       
-      {/* Lead Form Top (Inline - Under Product Kit) */}
+      {/* Lead Form Top (Inline - Under Hero) */}
       <LeadForm 
         id="lead-form-top" 
         position="top" 
         selectedPkg={topFormPkg} 
         onChangePkg={setTopFormPkg} 
       />
+
+      <Problems />
+      <Solution onOpenForm={() => scrollToForm('lead-form-top', '10kg')} />
+      <ProductKit onOpenForm={(type) => scrollToForm('lead-form-bottom', type === '5kg' ? '5kg' : '10kg')} />
 
       <Materials onOpenForm={() => scrollToForm('lead-form-bottom', 'consult')} />
       <Animals onOpenForm={() => scrollToForm('lead-form-bottom', 'consult')} />
@@ -380,22 +381,22 @@ export default function App() {
         <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-[0_-4px_10px_rgba(0,0,0,0.06)] px-3 py-3 flex items-center justify-between gap-2 max-w-md mx-auto pb-safe">
           <a 
             href={`tel:${BRAND.hotline}`} 
-            className="flex-1 flex flex-col items-center justify-center bg-[#ea580c] text-white py-2.5 rounded-xl active:bg-orange-700 transition-colors shadow-sm"
+            className="flex-[0.8] flex flex-col items-center justify-center bg-[#ea580c] text-white py-2.5 rounded-xl active:bg-orange-700 transition-colors shadow-sm"
             onClick={() => trackEvent('phone_click')}
           >
             <Phone className="w-5 h-5 mb-0.5" />
-            <span className="text-[12px] font-black uppercase tracking-wider">Gọi ngay</span>
+            <span className="text-[11px] font-black uppercase tracking-wider">Gọi ngay</span>
           </a>
           
           <a 
             href={`https://zalo.me/${BRAND.zalo}`} 
             target="_blank" 
             rel="noreferrer" 
-            className="flex-1 flex flex-col items-center justify-center bg-[#0068ff] text-white py-2.5 rounded-xl active:bg-blue-700 transition-colors shadow-sm"
+            className="flex-[0.8] flex flex-col items-center justify-center bg-[#0068ff] text-white py-2.5 rounded-xl active:bg-blue-700 transition-colors shadow-sm"
             onClick={() => trackEvent('zalo_click', { location: 'sticky_cta' })}
           >
             <MessageCircle className="w-5 h-5 mb-0.5" />
-            <span className="text-[12px] font-black uppercase tracking-wider">Zalo</span>
+            <span className="text-[11px] font-black uppercase tracking-wider">Zalo</span>
           </a>
           
           <button 
@@ -403,10 +404,10 @@ export default function App() {
               trackEvent('sticky_cta_click');
               handleOpenForm('general');
             }} 
-            className="flex-1 flex flex-col items-center justify-center bg-[#2E7D32] text-white py-2.5 rounded-xl active:bg-green-800 transition-colors shadow-sm cursor-pointer"
+            className="flex-[1.8] flex flex-col items-center justify-center bg-gradient-to-r from-[#FF8F00] to-[#E65100] text-white py-2.5 rounded-xl border border-white/40 active:scale-[0.98] transition-all shadow-md cursor-pointer animate-pulse-slow"
           >
             <FileText className="w-5 h-5 mb-0.5" />
-            <span className="text-[12px] font-black uppercase tracking-wider">Để lại số</span>
+            <span className="text-[12px] font-black uppercase tracking-wide">ĐẶT MUA / TƯ VẤN</span>
           </button>
         </div>
       )}
