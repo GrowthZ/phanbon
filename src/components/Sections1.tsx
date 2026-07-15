@@ -21,17 +21,17 @@ export function Hero({ onOpenForm }: { onOpenForm: () => void }) {
             <AlertTriangle className="w-4 h-4" /> CẢNH BÁO QUAN TRỌNG
           </span>
         </RevealOnScroll>
-        
+
         <RevealOnScroll delay={100}>
           <h1 className="text-[32px] sm:text-[40px] font-black text-[#B71C1C] uppercase leading-[1.1] mb-5 drop-shadow-sm">
-            99% NGƯỜI NÔNG DÂN ĐÃ <br/>
+            99% NGƯỜI NÔNG DÂN <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF8F00] to-[#E65100]">
-              GIẢM MỘT NỬA CHI PHÍ
-            </span> <br/>
-            CHĂN NUÔI NHỜ CÁCH NÀY
+              ĐÃ GIẢM 50% CHI PHÍ CHĂN NUÔI
+            </span> <br />
+            NHỜ CÁCH NÀY 👇 👇 👇
           </h1>
         </RevealOnScroll>
-        
+
         <RevealOnScroll delay={200}>
           <p className="text-[16px] sm:text-[18px] text-[#374151] font-bold leading-relaxed mb-8 px-2 bg-white/60 p-3 rounded-xl border border-white">
             Bí quyết <span className="text-[#D32F2F] underline decoration-2 underline-offset-2">chưa từng tiết lộ</span> giúp vật nuôi lớn nhanh như thổi, khỏe mạnh, không lo dịch bệnh. Đọc ngay trước khi đối thủ của bạn biết!
@@ -43,19 +43,19 @@ export function Hero({ onOpenForm }: { onOpenForm: () => void }) {
             <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded animate-pulse z-10">
               ● TRỰC TIẾP TỪ TRANG TRẠI
             </div>
-            <iframe 
-              src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F831586530047269%2F&show_text=false&t=0" 
+            <iframe
+              src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F831586530047269%2F&show_text=false&t=0"
               className="w-full h-full border-none"
-              scrolling="no" 
-              allowFullScreen={true} 
+              scrolling="no"
+              allowFullScreen={true}
               allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
             ></iframe>
           </div>
         </RevealOnScroll>
-        
+
         <RevealOnScroll delay={400} className="space-y-4">
           <Button variant="primary" onClick={handleCtaClick} className="w-full shadow-xl bg-gradient-to-r from-[#D32F2F] to-[#C62828] hover:scale-[1.02] text-[18px] py-4 h-auto uppercase tracking-wide border-2 border-[#FFCDD2] text-white font-black animate-bounce-slow">
-            <Zap className="inline-block mr-2 w-6 h-6" /> TÔI MUỐN GIẢM 50% CHI PHÍ NGAY!
+            <Zap className="inline-block mr-2 w-6 h-6" /> BẤM MUA - giảm ngay 50%
           </Button>
           <div className="flex items-center justify-center gap-2 text-red-600 text-[12px] sm:text-[13px] font-extrabold bg-red-50/70 border border-red-100/50 py-2 px-3 rounded-xl">
             <span className="w-2 h-2 rounded-full bg-red-500 block animate-pulse"></span>
@@ -87,7 +87,7 @@ export function Problems() {
       <SectionTitle subtitle="SỰ THẬT ĐÁNG SỢ VỀ CHĂN NUÔI HIỆN NAY:">
         <span className="text-[#D32F2F]">BẠN ĐANG LÀM GIÀU CHO ĐẠI LÝ CÁM CÒ?</span>
       </SectionTitle>
-      
+
       <div className="grid grid-cols-1 gap-4 mt-2">
         {painPoints.map((item, i) => (
           <RevealOnScroll key={i} delay={i * 80}>
@@ -119,7 +119,7 @@ export function Solution({ onOpenForm }: { onOpenForm: () => void }) {
       <SectionTitle subtitle="BÍ QUYẾT ĐỘC QUYỀN CHƯA TỪNG TIẾT LỘ">
         ĐÂY LÀ PHƯƠNG PHÁP <span className="text-[#2E7D32]">'THẦN THÁNH'</span> ĐÃ CỨU SỐNG 10,000+ TRANG TRẠI
       </SectionTitle>
-      
+
       <div className="bg-gradient-to-br from-[#E8F5E9] to-[#C8E6C9] rounded-3xl p-5 sm:p-6 border-2 border-[#4CAF50] mb-8 shadow-lg relative overflow-hidden">
         <div className="absolute top-0 right-0 bg-[#FF9800] text-white text-[10px] font-black px-3 py-1 rounded-bl-xl z-10 uppercase">
           Giải pháp đột phá 2024

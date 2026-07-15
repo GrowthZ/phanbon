@@ -3,7 +3,17 @@ import { SectionTitle, SectionWrapper, RevealOnScroll, FAQItem } from './ui';
 import { BRAND, trackEvent, TRACKING_CONFIG } from '../constants';
 import { ShieldCheck, Truck, RefreshCcw, CheckCircle } from 'lucide-react';
 
-export function LeadForm() {
+export function LeadForm({
+  id = 'lead-form-section',
+  position = 'bottom',
+  selectedPkg,
+  onChangePkg
+}: {
+  id?: string;
+  position?: 'top' | 'bottom';
+  selectedPkg: '5kg' | '10kg' | 'consult';
+  onChangePkg: (pkg: '5kg' | '10kg' | 'consult') => void;
+}) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
@@ -15,19 +25,28 @@ export function LeadForm() {
     const name = formData.get('name') as string;
     const phone = formData.get('phone') as string;
     const province = formData.get('province') as string;
-    const notes = formData.get('notes') as string;
+    const notesInput = formData.get('notes') as string;
 
-    // Kiểm tra số điện thoại có chứa ký tự hoặc số
+    // Kiểm tra số điện thoại
     if (!phone || !phone.trim()) {
       setError('Vui lòng nhập số điện thoại.');
       return;
     }
 
+    const pkgText = selectedPkg === '10kg' 
+      ? 'Bộ 10kg Tiết Kiệm (Mua nhiều nhất)' 
+      : selectedPkg === '5kg' 
+        ? 'Bộ 5kg Dùng Thử' 
+        : 'Chưa chọn - Cần tư vấn thêm';
+
+    const notes = `[Sản phẩm chọn: ${pkgText}] ${notesInput ? '. Ghi chú thêm: ' + notesInput : ''}`;
+
     trackEvent('lead_form_submit', {
       name,
       phone,
       province,
-      notes
+      notes,
+      position
     });
 
     const scriptUrl = import.meta.env.VITE_APPSCRIPT_URL || 'https://script.google.com/macros/s/AKfycbwAgwzxj8zD4Fv-vUx2nm1dDfiO3kiu6BMz-WqdEm4DjYnZKU5oiikW32CMeMX8ujM/exec';
@@ -38,7 +57,7 @@ export function LeadForm() {
         province,
         notes,
         sheetName: TRACKING_CONFIG.sheetName,
-        branch: "Form - Cuối trang"
+        branch: position === 'top' ? "Form - Giữa trang" : "Form - Cuối trang"
       });
       fetch(`${scriptUrl}?${params.toString()}`, {
         method: 'GET',
@@ -56,9 +75,12 @@ export function LeadForm() {
   };
 
   return (
-    <SectionWrapper bgType="white" id="lead-form-section">
-      <SectionTitle subtitle="Kỹ thuật viên sẽ liên hệ lại ngay để hướng dẫn cách ủ phù hợp với mô hình nhà mình">
-        NHẬN TƯ VẤN & CÔNG THỨC Ủ MIỄN PHÍ
+    <SectionWrapper bgType={position === 'top' ? 'gray' : 'white'} id={id}>
+      <SectionTitle subtitle={position === 'top' 
+        ? "Đăng ký mua hàng hoặc nhận tư vấn kỹ thuật miễn phí trực tiếp từ kỹ sư nông nghiệp"
+        : "Kỹ thuật viên sẽ liên hệ lại ngay để hướng dẫn cách ủ phù hợp với mô hình nhà mình"
+      }>
+        {position === 'top' ? "BẢNG ĐĂNG KÝ MUA HÀNG & TƯ VẤN" : "NHẬN TƯ VẤN & CÔNG THỨC Ủ MIỄN PHÍ"}
       </SectionTitle>
 
       <RevealOnScroll className="w-full max-w-lg mx-auto">
@@ -74,63 +96,110 @@ export function LeadForm() {
                 </div>
               )}
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                <label className="block text-white font-bold text-sm mb-1">Họ và Tên</label>
-                <input 
-                  type="text" 
-                  name="name"
-                  required 
-                  onFocus={handleInputFocus}
-                  placeholder="Họ và Tên của bác/anh/chị"
-                  className="w-full h-12 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner" 
-                />
-              </div>
-              
-              <div>
-                <label className="block text-white font-bold text-sm mb-1">Số điện thoại Zalo/Nghe gọi</label>
-                <input 
-                  type="tel" 
-                  name="phone"
-                  required 
-                  onFocus={handleInputFocus}
-                  placeholder="Số điện thoại của bác"
-                  className="w-full h-12 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner" 
-                />
-              </div>
+                
+                {/* Bộ Chọn Gói Sản Phẩm */}
+                <div className="mb-4 text-left">
+                  <label className="block text-white font-bold text-sm mb-2">Chọn bộ sản phẩm:</label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <div 
+                      onClick={() => onChangePkg('10kg')}
+                      className={`p-3 rounded-xl border-2 cursor-pointer transition-all flex flex-col justify-center items-center text-center ${
+                        selectedPkg === '10kg'
+                          ? 'bg-[#FF9800] border-white text-white shadow-lg scale-[1.02]'
+                          : 'bg-white/95 border-transparent text-gray-800 hover:bg-white'
+                      }`}
+                    >
+                      <span className={`font-extrabold text-[9px] uppercase px-1.5 py-0.5 rounded-full mb-1 ${
+                        selectedPkg === '10kg' ? 'bg-red-600 text-white' : 'bg-red-100 text-[#B71C1C]'
+                      }`}>Mua nhiều nhất</span>
+                      <span className="font-black text-[13px] leading-tight">Bộ 10kg Tiết Kiệm</span>
+                    </div>
+                    <div 
+                      onClick={() => onChangePkg('5kg')}
+                      className={`p-3 rounded-xl border-2 cursor-pointer transition-all flex flex-col justify-center items-center text-center ${
+                        selectedPkg === '5kg'
+                          ? 'bg-[#FF9800] border-white text-white shadow-lg scale-[1.02]'
+                          : 'bg-white/95 border-transparent text-gray-800 hover:bg-white'
+                      }`}
+                    >
+                      <span className={`font-extrabold text-[9px] uppercase px-1.5 py-0.5 rounded-full mb-1 ${
+                        selectedPkg === '5kg' ? 'bg-gray-600 text-white' : 'bg-gray-100 text-gray-500'
+                      }`}>Dùng thử</span>
+                      <span className="font-black text-[13px] leading-tight">Bộ 5kg Dùng Thử</span>
+                    </div>
+                    <div 
+                      onClick={() => onChangePkg('consult')}
+                      className={`p-3 rounded-xl border-2 cursor-pointer transition-all flex flex-col justify-center items-center text-center ${
+                        selectedPkg === 'consult'
+                          ? 'bg-[#FF9800] border-white text-white shadow-lg scale-[1.02]'
+                          : 'bg-white/95 border-transparent text-gray-800 hover:bg-white'
+                      }`}
+                    >
+                      <span className={`font-extrabold text-[9px] uppercase px-1.5 py-0.5 rounded-full mb-1 ${
+                        selectedPkg === 'consult' ? 'bg-green-700 text-green-100' : 'bg-green-50 text-green-700'
+                      }`}>Tư vấn</span>
+                      <span className="font-black text-[13px] leading-tight">Cần tư vấn thêm</span>
+                    </div>
+                  </div>
+                </div>
 
-              <div>
-                <label className="block text-white font-bold text-sm mb-1">Tỉnh / Thành phố</label>
-                <input 
-                  type="text" 
-                  name="province"
-                  required 
-                  onFocus={handleInputFocus}
-                  placeholder="Ví dụ: Nghệ An, Hải Dương..."
-                  className="w-full h-12 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner" 
-                />
-              </div>
+                <div className="text-left">
+                  <label className="block text-white font-bold text-sm mb-1">Họ và Tên</label>
+                  <input 
+                    type="text" 
+                    name="name"
+                    required 
+                    onFocus={handleInputFocus}
+                    placeholder="Họ và Tên của bác/anh/chị"
+                    className="w-full h-12 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner text-[#1F2937]" 
+                  />
+                </div>
+                
+                <div className="text-left">
+                  <label className="block text-white font-bold text-sm mb-1">Số điện thoại Zalo/Nghe gọi</label>
+                  <input 
+                    type="tel" 
+                    name="phone"
+                    required 
+                    onFocus={handleInputFocus}
+                    placeholder="Số điện thoại của bác"
+                    className="w-full h-12 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner text-[#1F2937]" 
+                  />
+                </div>
 
-              <div>
-                <label className="block text-white font-bold text-sm mb-1">Nội dung cần tư vấn (Không bắt buộc)</label>
-                <textarea 
-                  name="notes"
-                  onFocus={handleInputFocus}
-                  placeholder="Ví dụ: Ủ bã đậu cho lợn, ủ rau cỏ cho gà..."
-                  rows={2}
-                  className="w-full py-2.5 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner resize-none text-[#1F2937]" 
-                />
-              </div>
+                <div className="text-left">
+                  <label className="block text-white font-bold text-sm mb-1">Tỉnh / Thành phố</label>
+                  <input 
+                    type="text" 
+                    name="province"
+                    required 
+                    onFocus={handleInputFocus}
+                    placeholder="Ví dụ: Nghệ An, Hải Dương..."
+                    className="w-full h-12 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner text-[#1F2937]" 
+                  />
+                </div>
 
-              <button 
-                type="submit" 
-                className="w-full h-14 bg-gradient-to-r from-[#F9A825] to-[#F57F17] text-white font-black text-[18px] rounded-xl shadow-lg border border-[#F9A825] uppercase tracking-wide active:scale-[0.98] transition-all hover:translate-y-[-1px] duration-200 mt-2 cursor-pointer"
-              >
-                ĐĂNG KÝ TƯ VẤN NGAY
-              </button>
-              <p className="text-center text-white/80 text-[12px] sm:text-[13px] mt-3 italic leading-relaxed">
-                * Thông tin của bà con được bảo mật tuyệt đối. Chúng tôi sẽ bảo mật và liên hệ trong thời gian sớm nhất.
-              </p>
-            </form>
+                <div className="text-left">
+                  <label className="block text-white font-bold text-sm mb-1">Nội dung cần tư vấn (Không bắt buộc)</label>
+                  <textarea 
+                    name="notes"
+                    onFocus={handleInputFocus}
+                    placeholder="Ví dụ: Ủ bã đậu cho lợn, ủ rau cỏ cho gà..."
+                    rows={2}
+                    className="w-full py-2.5 px-4 rounded-xl border-2 border-white/20 bg-white/95 focus:bg-white focus:border-[#F9A825] focus:ring-4 focus:ring-[#F9A825]/20 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all shadow-inner resize-none text-[#1F2937]" 
+                  />
+                </div>
+
+                <button 
+                  type="submit" 
+                  className="w-full h-14 bg-gradient-to-r from-[#FF8F00] to-[#E65100] hover:from-[#FFA000] hover:to-[#F57C00] text-white font-black text-[18px] rounded-xl shadow-xl border-2 border-white uppercase tracking-wide active:scale-[0.98] transition-all hover:translate-y-[-1px] duration-200 mt-2 cursor-pointer animate-pulse-slow flex items-center justify-center gap-2"
+                >
+                  {selectedPkg === 'consult' ? 'GỬI YÊU CẦU TƯ VẤN NGAY' : 'XÁC NHẬN ĐẶT MUA NGAY'}
+                </button>
+                <p className="text-center text-white/80 text-[12px] sm:text-[13px] mt-3 italic leading-relaxed">
+                  * Thông tin của bà con được bảo mật tuyệt đối. Chúng tôi sẽ bảo mật và liên hệ trong thời gian sớm nhất.
+                </p>
+              </form>
             </div>
           ) : (
             <div className="text-center py-8 bg-black/20 rounded-2xl border border-white/10 backdrop-blur-sm relative z-10">
