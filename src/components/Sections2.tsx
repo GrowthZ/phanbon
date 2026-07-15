@@ -116,7 +116,7 @@ export function Materials({ onOpenForm }: { onOpenForm: () => void }) {
             trackEvent('cta_materials_click');
             onOpenForm();
           }}
-          className="bg-gradient-to-r from-[#FF8F00] to-[#E65100] text-white shadow-xl hover:scale-105 border-none font-black text-[16px] py-4 uppercase w-full animate-bounce-slow"
+          className="bg-gradient-to-r from-[#FF8F00] to-[#E65100] text-white shadow-xl hover:scale-105 border-none font-black text-[16px] py-4 uppercase w-full animate-jiggle btn-shine"
         >
           TÔI MUỐN LẤY CÔNG THỨC Ủ NGAY!
         </Button>
@@ -159,7 +159,7 @@ export function Animals({ onOpenForm }: { onOpenForm: () => void }) {
             trackEvent('cta_animals_click');
             onOpenForm();
           }}
-          className="w-full text-white bg-[#D32F2F] hover:bg-[#B71C1C] font-black text-[16px] py-4 shadow-lg border-2 border-white uppercase"
+          className="w-full text-white bg-[#D32F2F] hover:bg-[#B71C1C] font-black text-[16px] py-4 shadow-lg border-2 border-white uppercase animate-jiggle btn-shine"
         >
           XEM TỶ LỆ PHỐI TRỘN CHUẨN XÁC!
         </Button>

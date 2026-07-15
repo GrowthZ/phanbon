@@ -152,8 +152,8 @@ export function Button({
 }) {
   const baseStyle = "font-black text-[16px] sm:text-[18px] py-4 px-6 rounded-xl w-full flex items-center justify-center transition-all active:scale-[0.98] uppercase tracking-wide shadow-sm hover:translate-y-[-1px] duration-200 cursor-pointer";
   const variants = {
-    primary: "bg-gradient-to-r from-[#F9A825] to-[#F57F17] text-white shadow-md shadow-[#F9A825]/20 border border-[#F9A825]",
-    secondary: "bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] text-white shadow-md shadow-[#2E7D32]/20 border border-[#2E7D32]",
+    primary: "bg-gradient-to-r from-[#F9A825] to-[#F57F17] text-white shadow-md shadow-[#F9A825]/20 border border-[#F9A825] btn-shine",
+    secondary: "bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] text-white shadow-md shadow-[#2E7D32]/20 border border-[#2E7D32] btn-shine",
     outline: "bg-white text-[#2E7D32] border-2 border-[#DDEEDC] hover:bg-[#E8F5E9] hover:border-[#2E7D32]"
   };
 
@@ -250,7 +250,7 @@ export function ProductPackageCard({
         <Button 
           variant={isPromo ? 'primary' : 'secondary'} 
           onClick={onBtnClick} 
-          className="w-full font-black py-4 uppercase text-[15px]"
+          className="w-full font-black py-4 uppercase text-[15px] animate-jiggle"
         >
           Đặt bộ {title.split(' ')[2]}
         </Button>

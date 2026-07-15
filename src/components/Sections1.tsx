@@ -141,7 +141,7 @@ export function Solution({ onOpenForm }: { onOpenForm: () => void }) {
       </div>
 
       <RevealOnScroll delay={100} className="text-center">
-        <Button variant="primary" onClick={() => { trackEvent('hero_cta_click'); onOpenForm(); }} className="w-full sm:w-auto px-8 mx-auto shadow-xl bg-gradient-to-r from-[#4CAF50] to-[#2E7D32] text-white font-black text-[18px] py-4 h-auto border-2 border-[#81C784] animate-pulse">
+        <Button variant="primary" onClick={() => { trackEvent('hero_cta_click'); onOpenForm(); }} className="w-full sm:w-auto px-8 mx-auto shadow-xl bg-gradient-to-r from-[#4CAF50] to-[#2E7D32] text-white font-black text-[18px] py-4 h-auto border-2 border-[#81C784] animate-jiggle">
           TÔI MUỐN SỞ HỮU BÍ KÍP NÀY <ChevronRight className="w-6 h-6 ml-1" />
         </Button>
       </RevealOnScroll>
