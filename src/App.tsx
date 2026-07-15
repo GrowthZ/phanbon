@@ -11,14 +11,17 @@ import { LiveBuyersPopup } from './components/LiveBuyersPopup';
 function PopupForm({ 
   config, 
   context,
+  initialPkg = '10kg',
   onClose 
 }: { 
   config: { title: string; subtitle: string; buttonText: string }; 
   context: string;
+  initialPkg?: '5kg' | '10kg' | 'consult';
   onClose: () => void; 
 }) {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [selectedPkg, setSelectedPkg] = useState<'5kg' | '10kg' | 'consult'>(initialPkg);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); 
@@ -28,19 +31,27 @@ function PopupForm({
     const name = formData.get('name') as string;
     const phone = formData.get('phone') as string;
     const province = formData.get('province') as string;
-    const notes = formData.get('notes') as string;
+    const notesInput = formData.get('notes') as string;
 
-    // Kiểm tra số điện thoại có chứa ký tự hoặc số
     if (!phone || !phone.trim()) {
       setError('Vui lòng nhập số điện thoại.');
       return;
     }
 
+    const pkgText = selectedPkg === '10kg' 
+      ? 'Bộ 10kg Tiết Kiệm (Mua nhiều nhất)' 
+      : selectedPkg === '5kg' 
+        ? 'Bộ 5kg Dùng Thử' 
+        : 'Chưa chọn - Cần tư vấn thêm';
+
+    const notes = `[Sản phẩm chọn: ${pkgText}] ${notesInput ? '. Ghi chú thêm: ' + notesInput : ''}`;
+
     trackEvent('lead_form_submit', {
       name,
       phone,
       province,
-      notes
+      notes,
+      position: 'popup'
     });
 
     const scriptUrl = import.meta.env.VITE_APPSCRIPT_URL || 'https://script.google.com/macros/s/AKfycbwAgwzxj8zD4Fv-vUx2nm1dDfiO3kiu6BMz-WqdEm4DjYnZKU5oiikW32CMeMX8ujM/exec';
@@ -51,7 +62,7 @@ function PopupForm({
         province,
         notes,
         sheetName: TRACKING_CONFIG.sheetName,
-        branch: context
+        branch: `Popup - ${context}`
       });
       fetch(`${scriptUrl}?${params.toString()}`, {
         method: 'GET',
@@ -69,7 +80,7 @@ function PopupForm({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-fade-in animate-duration-150">
       <div className="bg-white rounded-3xl w-full max-w-md p-6 sm:p-8 relative shadow-2xl transition-all duration-300 border border-gray-100 max-h-[90vh] overflow-y-auto">
         <button 
           onClick={onClose}
@@ -80,7 +91,7 @@ function PopupForm({
         
         {!submitted ? (
           <>
-            <div className="text-center mb-6">
+            <div className="text-center mb-5">
               <h2 className="text-[20px] sm:text-[22px] font-black text-[#2E7D32] uppercase mb-2 leading-tight">
                 {config.title}
               </h2>
@@ -96,6 +107,52 @@ function PopupForm({
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Bộ Chọn Gói Sản Phẩm Trực Quan */}
+              <div className="mb-4 text-left">
+                <label className="block text-gray-700 font-bold text-xs mb-2">Chọn bộ sản phẩm:</label>
+                <div className="grid grid-cols-3 gap-2">
+                  <div 
+                    onClick={() => setSelectedPkg('10kg')}
+                    className={`p-2.5 rounded-xl border-2 cursor-pointer transition-all flex flex-col justify-center items-center text-center ${
+                      selectedPkg === '10kg'
+                        ? 'bg-[#FF9800] border-[#FF9800] text-white shadow-md scale-[1.02]'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100'
+                    }`}
+                  >
+                    <span className={`font-extrabold text-[8px] uppercase px-1 py-0.5 rounded-full mb-1 leading-none ${
+                      selectedPkg === '10kg' ? 'bg-red-600 text-white' : 'bg-red-100 text-[#B71C1C]'
+                    }`}>Bán chạy</span>
+                    <span className="font-bold text-[11px] leading-tight">Bộ 10kg</span>
+                  </div>
+                  <div 
+                    onClick={() => setSelectedPkg('5kg')}
+                    className={`p-2.5 rounded-xl border-2 cursor-pointer transition-all flex flex-col justify-center items-center text-center ${
+                      selectedPkg === '5kg'
+                        ? 'bg-[#FF9800] border-[#FF9800] text-white shadow-md scale-[1.02]'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100'
+                    }`}
+                  >
+                    <span className={`font-extrabold text-[8px] uppercase px-1 py-0.5 rounded-full mb-1 leading-none ${
+                      selectedPkg === '5kg' ? 'bg-gray-600 text-white' : 'bg-gray-100 text-gray-500'
+                    }`}>Dùng thử</span>
+                    <span className="font-bold text-[11px] leading-tight">Bộ 5kg</span>
+                  </div>
+                  <div 
+                    onClick={() => setSelectedPkg('consult')}
+                    className={`p-2.5 rounded-xl border-2 cursor-pointer transition-all flex flex-col justify-center items-center text-center ${
+                      selectedPkg === 'consult'
+                        ? 'bg-[#FF9800] border-[#FF9800] text-white shadow-md scale-[1.02]'
+                        : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100'
+                    }`}
+                  >
+                    <span className={`font-extrabold text-[8px] uppercase px-1 py-0.5 rounded-full mb-1 leading-none ${
+                      selectedPkg === 'consult' ? 'bg-green-700 text-green-100' : 'bg-green-50 text-green-700'
+                    }`}>Tư vấn</span>
+                    <span className="font-bold text-[11px] leading-tight">Tư vấn</span>
+                  </div>
+                </div>
+              </div>
+
               <div>
                 <label className="block text-gray-700 font-bold text-xs mb-1">Họ và Tên</label>
                 <input 
@@ -104,7 +161,7 @@ function PopupForm({
                   required 
                   onFocus={handleInputFocus}
                   placeholder="Họ và tên của bác"
-                  className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all" 
+                  className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all text-[#1F2937]" 
                 />
               </div>
               
@@ -116,7 +173,7 @@ function PopupForm({
                   required 
                   onFocus={handleInputFocus}
                   placeholder="Số điện thoại Zalo/Nghe gọi"
-                  className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all" 
+                  className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all text-[#1F2937]" 
                 />
               </div>
 
@@ -128,7 +185,7 @@ function PopupForm({
                   required 
                   onFocus={handleInputFocus}
                   placeholder="Ví dụ: Nghệ An, Hải Dương..."
-                  className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all" 
+                  className="w-full h-12 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all text-[#1F2937]" 
                 />
               </div>
 
@@ -139,13 +196,16 @@ function PopupForm({
                   onFocus={handleInputFocus}
                   placeholder="Ví dụ: Ủ bã đậu cho lợn, ủ rau cỏ cho gà..."
                   rows={2}
-                  className="w-full py-2.5 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all resize-none" 
+                  className="w-full py-2.5 px-4 rounded-xl border-2 border-gray-200 bg-gray-50 focus:bg-white focus:border-[#2E7D32] focus:ring-4 focus:ring-[#2E7D32]/10 focus:outline-none text-[15px] sm:text-[16px] font-semibold transition-all resize-none text-[#1F2937]" 
                 />
               </div>
               
-              <Button variant="primary" className="mt-2 py-4 w-full bg-gradient-to-r from-[#2E7D32] to-[#1B5E20] border-none text-white text-[16px] font-bold">
-                {config.buttonText}
-              </Button>
+              <button 
+                type="submit"
+                className="w-full h-13 bg-gradient-to-r from-[#FF8F00] to-[#E65100] hover:from-[#FFA000] hover:to-[#F57C00] text-white font-black text-[16px] rounded-xl shadow-lg border-2 border-white uppercase tracking-wide active:scale-[0.98] transition-all hover:translate-y-[-1px] duration-200 mt-2 cursor-pointer animate-pulse-slow flex items-center justify-center gap-2"
+              >
+                {selectedPkg === 'consult' ? 'GỬI YÊU CẦU TƯ VẤN NGAY' : 'XÁC NHẬN ĐẶT MUA NGAY'}
+              </button>
             </form>
           </>
         ) : (
@@ -174,7 +234,13 @@ export default function App() {
     title: string;
     subtitle: string;
     buttonText: string;
+    context: string;
+    initialPkg: '5kg' | '10kg' | 'consult';
   } | null>(null);
+  
+  const [topFormPkg, setTopFormPkg] = useState<'5kg' | '10kg' | 'consult'>('10kg');
+  const [bottomFormPkg, setBottomFormPkg] = useState<'5kg' | '10kg' | 'consult'>('10kg');
+
   const [showSticky, setShowSticky] = useState(false);
   const [scrolled50, setScrolled50] = useState(false);
   const [scrolled90, setScrolled90] = useState(false);
@@ -208,53 +274,88 @@ export default function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled50, scrolled90]);
 
-  const handleOpenForm = (context?: 'general' | 'materials' | 'animals' | '5kg' | '10kg') => {
+  const handleOpenForm = (contextType?: 'general' | 'materials' | 'animals' | '5kg' | '10kg') => {
     let title = "NHẬN TƯ VẤN KỸ THUẬT";
     let subtitle = "Kỹ thuật viên sẽ gọi lại hướng dẫn cách ủ chi tiết nhất cho bà con.";
     let buttonText = "GỬI YÊU CẦU TƯ VẤN";
-    let contextText = "Popup - Tư vấn chung";
+    let contextText = "Tư vấn chung";
+    let initialPkg: '5kg' | '10kg' | 'consult' = '10kg';
 
-    if (context === 'materials') {
+    if (contextType === 'materials') {
       title = "NHẬN CÔNG THỨC Ủ NGUYÊN LIỆU";
       subtitle = "Tài liệu hướng dẫn cách ủ rau, cám, cỏ, bã đậu, bã bia... tỷ lệ chuẩn nhất.";
       buttonText = "NHẬN CÔNG THỨC MIỄN PHÍ";
-      contextText = "Popup - Công thức nguyên liệu";
-    } else if (context === 'animals') {
+      contextText = "Công thức nguyên liệu";
+      initialPkg = 'consult';
+    } else if (contextType === 'animals') {
       title = "NHẬN TỶ LỆ PHỐI TRỘN VẬT NUÔI";
       subtitle = "Hướng dẫn chi tiết cách trộn thức ăn vi sinh phù hợp cho từng nhóm gia súc, gia cầm.";
       buttonText = "NHẬN TỶ LỆ PHỐI TRỘN";
-      contextText = "Popup - Tỷ lệ phối trộn";
-    } else if (context === '5kg') {
+      contextText = "Tỷ lệ phối trộn";
+      initialPkg = 'consult';
+    } else if (contextType === '5kg') {
       title = "NHẬN ƯU ĐÃI BỘ Ủ 5KG";
       subtitle = "Đăng ký nhận bộ thử nghiệm 5kg Men Nhà Nông kèm quà tặng hướng dẫn kỹ thuật.";
       buttonText = "ĐĂNG KÝ MUA BỘ 5KG";
-      contextText = "Popup - Mua bộ 5kg";
-    } else if (context === '10kg') {
+      contextText = "Mua bộ 5kg";
+      initialPkg = '5kg';
+    } else if (contextType === '10kg') {
       title = "ĐĂNG KÝ BỘ Ủ TIẾT KIỆM 10KG";
       subtitle = "Nhận bộ 10kg ưu đãi lớn nhất cho trang trại vừa và nhỏ, hỗ trợ kỹ thuật 24/7.";
       buttonText = "ĐĂNG KÝ MUA BỘ 10KG";
-      contextText = "Popup - Mua bộ 10kg";
+      contextText = "Mua bộ 10kg";
+      initialPkg = '10kg';
     }
 
-    setPopupConfig({ title, subtitle, buttonText, context: contextText });
+    setPopupConfig({ title, subtitle, buttonText, context: contextText, initialPkg });
+  };
+
+  const scrollToForm = (formId: 'lead-form-top' | 'lead-form-bottom', pkg: '5kg' | '10kg' | 'consult') => {
+    if (formId === 'lead-form-top') {
+      setTopFormPkg(pkg);
+    } else {
+      setBottomFormPkg(pkg);
+    }
+
+    const element = document.getElementById(formId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      trackEvent('scroll_to_form', { formId, pkg });
+    }
   };
 
   return (
     <div className="w-full max-w-md mx-auto bg-white min-h-screen shadow-2xl relative pb-28">
       {/* 13 Sections */}
-      <Hero onOpenForm={() => handleOpenForm('general')} />
+      <Hero onOpenForm={() => scrollToForm('lead-form-top', '10kg')} />
       <Problems />
-      <Solution onOpenForm={() => handleOpenForm('general')} />
-      <ProductKit onOpenForm={(type) => handleOpenForm(type === '5kg' ? '5kg' : '10kg')} />
-      <Materials onOpenForm={() => handleOpenForm('materials')} />
-      <Animals onOpenForm={() => handleOpenForm('animals')} />
-      <Process onOpenForm={() => handleOpenForm('general')} />
+      <Solution onOpenForm={() => scrollToForm('lead-form-top', '10kg')} />
+      <ProductKit onOpenForm={(type) => scrollToForm('lead-form-top', type === '5kg' ? '5kg' : '10kg')} />
+      
+      {/* Lead Form Top (Inline - Under Product Kit) */}
+      <LeadForm 
+        id="lead-form-top" 
+        position="top" 
+        selectedPkg={topFormPkg} 
+        onChangePkg={setTopFormPkg} 
+      />
+
+      <Materials onOpenForm={() => scrollToForm('lead-form-bottom', 'consult')} />
+      <Animals onOpenForm={() => scrollToForm('lead-form-bottom', 'consult')} />
+      <Process onOpenForm={() => scrollToForm('lead-form-bottom', '10kg')} />
       <Benefits />
       <OtherUses />
       <SocialProof />
       <FAQ />
       <Policy />
-      <LeadForm />
+      
+      {/* Lead Form Bottom (Inline - Old Position) */}
+      <LeadForm 
+        id="lead-form-bottom" 
+        position="bottom" 
+        selectedPkg={bottomFormPkg} 
+        onChangePkg={setBottomFormPkg} 
+      />
 
       {/* Footer Text */}
       <footer className="py-8 px-4 bg-gray-50 text-center text-gray-500 text-xs border-t border-gray-100">
@@ -311,7 +412,14 @@ export default function App() {
       )}
 
       {/* Popup Form */}
-      {popupConfig !== null && <PopupForm config={popupConfig} context={popupConfig.context} onClose={() => setPopupConfig(null)} />}
+      {popupConfig !== null && (
+        <PopupForm 
+          config={popupConfig} 
+          context={popupConfig.context} 
+          initialPkg={popupConfig.initialPkg}
+          onClose={() => setPopupConfig(null)} 
+        />
+      )}
 
       {/* Live Buyers Notification Popup */}
       <LiveBuyersPopup onClick={() => handleOpenForm('general')} />
