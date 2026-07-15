@@ -109,6 +109,7 @@ export function Materials({ onOpenForm }: { onOpenForm: () => void }) {
             trackEvent('cta_materials_click');
             onOpenForm();
           }}
+          className="animate-jiggle"
         >
           Nhận công thức ủ nguyên liệu miễn phí
         </Button>
@@ -149,6 +150,7 @@ export function Animals({ onOpenForm }: { onOpenForm: () => void }) {
             trackEvent('cta_animals_click');
             onOpenForm();
           }}
+          className="animate-jiggle"
         >
           Nhận tỷ lệ phối trộn cho vật nuôi của tôi
         </Button>

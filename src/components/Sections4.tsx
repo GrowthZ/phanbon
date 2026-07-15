@@ -192,7 +192,7 @@ export function LeadForm({
 
                 <button 
                   type="submit" 
-                  className="w-full h-14 bg-gradient-to-r from-[#FF8F00] to-[#E65100] hover:from-[#FFA000] hover:to-[#F57C00] text-white font-black text-[18px] rounded-xl shadow-xl border-2 border-white uppercase tracking-wide active:scale-[0.98] transition-all hover:translate-y-[-1px] duration-200 mt-2 cursor-pointer animate-pulse-slow flex items-center justify-center gap-2"
+                  className="w-full h-14 bg-gradient-to-r from-[#FF8F00] to-[#E65100] hover:from-[#FFA000] hover:to-[#F57C00] text-white font-black text-[18px] rounded-xl shadow-xl border-2 border-white uppercase tracking-wide active:scale-[0.98] transition-all hover:translate-y-[-1px] duration-200 mt-2 cursor-pointer animate-jiggle btn-shine flex items-center justify-center gap-2"
                 >
                   {selectedPkg === 'consult' ? 'GỬI YÊU CẦU TƯ VẤN NGAY' : 'XÁC NHẬN ĐẶT MUA NGAY'}
                 </button>

@@ -202,7 +202,7 @@ function PopupForm({
               
               <button 
                 type="submit"
-                className="w-full h-13 bg-gradient-to-r from-[#FF8F00] to-[#E65100] hover:from-[#FFA000] hover:to-[#F57C00] text-white font-black text-[16px] rounded-xl shadow-lg border-2 border-white uppercase tracking-wide active:scale-[0.98] transition-all hover:translate-y-[-1px] duration-200 mt-2 cursor-pointer animate-pulse-slow flex items-center justify-center gap-2"
+                className="w-full h-13 bg-gradient-to-r from-[#FF8F00] to-[#E65100] hover:from-[#FFA000] hover:to-[#F57C00] text-white font-black text-[16px] rounded-xl shadow-lg border-2 border-white uppercase tracking-wide active:scale-[0.98] transition-all hover:translate-y-[-1px] duration-200 mt-2 cursor-pointer animate-jiggle btn-shine flex items-center justify-center gap-2"
               >
                 {selectedPkg === 'consult' ? 'GỬI YÊU CẦU TƯ VẤN NGAY' : 'XÁC NHẬN ĐẶT MUA NGAY'}
               </button>
@@ -404,7 +404,7 @@ export default function App() {
               trackEvent('sticky_cta_click');
               handleOpenForm('general');
             }} 
-            className="flex-[1.8] flex flex-col items-center justify-center bg-gradient-to-r from-[#FF8F00] to-[#E65100] text-white py-2.5 rounded-xl border border-white/40 active:scale-[0.98] transition-all shadow-md cursor-pointer animate-pulse-slow"
+            className="flex-[1.8] flex flex-col items-center justify-center bg-gradient-to-r from-[#FF8F00] to-[#E65100] text-white py-2.5 rounded-xl border border-white/40 active:scale-[0.98] transition-all shadow-md cursor-pointer animate-jiggle btn-shine"
           >
             <FileText className="w-5 h-5 mb-0.5" />
             <span className="text-[12px] font-black uppercase tracking-wide">ĐẶT MUA / TƯ VẤN</span>
