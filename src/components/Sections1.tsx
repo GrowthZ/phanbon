@@ -28,7 +28,7 @@ export function Hero({ onOpenForm }: { onOpenForm: () => void }) {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF8F00] to-[#E65100]">
               ĐÃ GIẢM 50% CHI PHÍ CHĂN NUÔI
             </span> <br />
-            NHỜ CÁCH NÀY </br>
+            NHỜ CÁCH NÀY <br />
             👇 👇 👇
         </h1>
       </RevealOnScroll>

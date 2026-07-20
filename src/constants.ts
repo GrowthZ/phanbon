@@ -10,7 +10,7 @@ export const BRAND = {
 };
 
 export const TRACKING_CONFIG = {
-  pixelId: "3606095186215719",
+  pixelId: "1687748159179696",
   sheetName: "biofarm", // will be "channuoi" on menvisinh2 branch
   branchName: "landing-variant-giat-tit" // will be "menvisinh2" on menvisinh2 branch
 };
