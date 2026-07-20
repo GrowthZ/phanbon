@@ -9,7 +9,7 @@ export const BRAND = {
   stats: "Chuyên gia hỗ trợ kỹ thuật tận tình"
 };
 export const TRACKING_CONFIG = {
-  pixelId: "3606095186215719",
+  pixelId: "1687748159179696",
   sheetName: "channuoi",
   branchName: "menvisinh2"
 };
